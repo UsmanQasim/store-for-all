@@ -1,4 +1,3 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
@@ -9,12 +8,11 @@ import { supabase } from '@/lib/supabase';
 import { toAppError } from '@/lib/errors';
 import { open } from '@/lib/links';
 import { useAuth } from '@/providers/AuthProvider';
-import { useAppTheme } from '@/theme';
+import { BrandLogo } from '@/components/shell';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 export default function SignIn() {
-  const { colors } = useAppTheme();
   const { sendCode } = useAuth();
   const [email, setEmail] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -45,22 +43,23 @@ export default function SignIn() {
 
   return (
     <Screen
+      title=""
       footer={
-        <View style={{ gap: 10 }}>
-          <Button title={t('auth.sendCode')} onPress={submit} loading={busy} fullWidth />
-          <Text variant="caption" color="textMuted" align="center">
+        <View className="gap-2.5">
+          <Button title={t('auth.sendCode')} icon="arrow_forward" onPress={submit} loading={busy} fullWidth />
+          <Text className="font-caption text-caption text-text-muted text-center">
             {t('auth.agree')}{' '}
-            <Text variant="caption" color="primary" onPress={() => open.url(legalUrls.terms)}>Terms</Text> ·{' '}
-            <Text variant="caption" color="primary" onPress={() => open.url(legalUrls.privacy)}>Privacy</Text>
+            <Text className="font-caption text-caption text-primary font-semibold" onPress={() => open.url(legalUrls.terms)}>Terms</Text> ·{' '}
+            <Text className="font-caption text-caption text-primary font-semibold" onPress={() => open.url(legalUrls.privacy)}>Privacy</Text>
           </Text>
         </View>
       }
     >
-      <View style={{ width: 64, height: 64, borderRadius: 20, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center' }}>
-        <Ionicons name="storefront" size={32} color={colors.onPrimary} />
+      <View className="gap-space-sm pt-space-md">
+        <BrandLogo size={56} />
+        <Text className="font-headline-lg text-headline-lg text-on-surface">{t('auth.title')}</Text>
+        <Text className="font-body-md text-body-md text-text-muted">{t('auth.subtitle')}</Text>
       </View>
-      <Text variant="h1">{t('auth.title')}</Text>
-      <Text color="textMuted">{t('auth.subtitle')}</Text>
       <Input
         label={t('auth.email')}
         placeholder={t('auth.emailPlaceholder')}
@@ -73,10 +72,10 @@ export default function SignIn() {
         autoFocus
         returnKeyType="send"
         onSubmitEditing={submit}
-        leftIcon="mail-outline"
+        leftIcon="mail"
         error={error}
       />
-      {isReviewAccount ? <Input label="Password" value={password} onChangeText={setPassword} secureTextEntry autoCapitalize="none" /> : null}
+      {isReviewAccount ? <Input label="Password" leftIcon="lock" value={password} onChangeText={setPassword} secureTextEntry autoCapitalize="none" /> : null}
     </Screen>
   );
 }

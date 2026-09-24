@@ -86,26 +86,26 @@ create table public.categories (
   slug               text primary key check (slug ~ '^[a-z0-9-]+$'),
   name_en            text not null,
   name_ur            text not null,
-  icon               text not null,              -- Ionicons glyph name
+  icon               text not null,              -- Material Symbols name
   supports_booking   boolean not null default false,
   supports_ordering  boolean not null default false,
   sort               smallint not null default 100
 );
 
 insert into public.categories (slug, name_en, name_ur, icon, supports_booking, supports_ordering, sort) values
-  ('barber',        'Barber',              'حجام',            'cut-outline',              true,  false, 10),
-  ('salon',         'Beauty Salon',        'بیوٹی سیلون',     'sparkles-outline',         true,  false, 20),
-  ('grocery',       'Grocery & Kiryana',   'کریانہ',          'basket-outline',           false, true,  30),
-  ('pharmacy',      'Pharmacy',            'فارمیسی',         'medkit-outline',           false, true,  40),
-  ('bakery',        'Bakery & Sweets',     'بیکری',           'cafe-outline',             false, true,  50),
-  ('restaurant',    'Restaurant & Food',   'ریسٹورنٹ',        'restaurant-outline',       true,  true,  60),
-  ('tailor',        'Tailor',              'درزی',            'shirt-outline',            true,  false, 70),
-  ('mobile-repair', 'Mobile & Repair',     'موبائل ریپئر',    'phone-portrait-outline',   true,  true,  80),
-  ('laundry',       'Laundry',             'لانڈری',          'water-outline',            true,  true,  90),
-  ('clinic',        'Clinic',              'کلینک',           'medical-outline',          true,  false, 100),
-  ('electronics',   'Electronics',         'الیکٹرانکس',      'hardware-chip-outline',    false, true,  110),
-  ('fitness',       'Gym & Fitness',       'جم',              'barbell-outline',          true,  false, 120),
-  ('other',         'Other',               'دیگر',            'storefront-outline',       true,  true,  999);
+  ('barber',        'Barber',              'حجام',            'content_cut',              true,  false, 10),
+  ('salon',         'Beauty Salon',        'بیوٹی سیلون',     'spa',         true,  false, 20),
+  ('grocery',       'Grocery & Kiryana',   'کریانہ',          'shopping_basket',           false, true,  30),
+  ('pharmacy',      'Pharmacy',            'فارمیسی',         'medication',           false, true,  40),
+  ('bakery',        'Bakery & Sweets',     'بیکری',           'bakery_dining',             false, true,  50),
+  ('restaurant',    'Restaurant & Food',   'ریسٹورنٹ',        'restaurant',       true,  true,  60),
+  ('tailor',        'Tailor',              'درزی',            'styler',            true,  false, 70),
+  ('mobile-repair', 'Mobile & Repair',     'موبائل ریپئر',    'phonelink_setup',   true,  true,  80),
+  ('laundry',       'Laundry',             'لانڈری',          'local_laundry_service',            true,  true,  90),
+  ('clinic',        'Clinic',              'کلینک',           'medical_services',          true,  false, 100),
+  ('electronics',   'Electronics',         'الیکٹرانکس',      'devices',    false, true,  110),
+  ('fitness',       'Gym & Fitness',       'جم',              'fitness_center',          true,  false, 120),
+  ('other',         'Other',               'دیگر',            'storefront',       true,  true,  999);
 
 -- -----------------------------------------------------------------------------
 -- Shops
@@ -203,6 +203,7 @@ create table public.shop_payment_methods (
   qr_image_url    text,                                             -- e.g. Raast / bank QR image uploaded by the owner
   note            text check (char_length(note) <= 200),
   is_primary      boolean not null default false,
+  is_active       boolean not null default true,   -- owner can hide a method without deleting it
   sort            smallint not null default 0,
   created_at      timestamptz not null default now()
 );
@@ -625,7 +626,8 @@ returns table (
   id uuid, slug text, name text, tagline text, category_slug text, area text, city text,
   logo_url text, cover_url text, rating_avg numeric, rating_count integer,
   accepts_bookings boolean, accepts_orders boolean, offers_delivery boolean,
-  lat double precision, lng double precision, distance_m double precision
+  lat double precision, lng double precision, distance_m double precision,
+  address text, opening_hours jsonb, timezone text
 )
 language sql stable set search_path = public, extensions as $$
   with origin as (
@@ -636,7 +638,8 @@ language sql stable set search_path = public, extensions as $$
          s.logo_url, s.cover_url, s.rating_avg, s.rating_count,
          s.accepts_bookings, s.accepts_orders, s.offers_delivery,
          s.lat, s.lng,
-         case when o.g is null or s.location is null then null else st_distance(s.location, o.g) end
+         case when o.g is null or s.location is null then null else st_distance(s.location, o.g) end,
+         s.address, s.opening_hours, s.timezone
     from public.shops s cross join origin o
    where s.is_published and s.status = 'active'
      and (p_category is null or s.category_slug = p_category)
@@ -899,7 +902,10 @@ begin
     'bookings_pending', (select count(*) from public.bookings where shop_id = p_shop and status = 'pending' and starts_at > now()),
     'orders_open',      (select count(*) from public.orders   where shop_id = p_shop and status in ('placed','accepted','packing','ready','out_for_delivery')),
     'orders_new',       (select count(*) from public.orders   where shop_id = p_shop and status = 'placed'),
-    'revenue_today',    (select coalesce(sum(subtotal), 0) from public.orders where shop_id = p_shop and status = 'completed' and updated_at >= v_day_start),
+    'revenue_today',    (select coalesce(sum(subtotal), 0) from public.orders where shop_id = p_shop and status = 'completed' and updated_at >= v_day_start)
+                        + (select coalesce(sum(price), 0) from public.bookings where shop_id = p_shop and status = 'completed' and starts_at >= v_day_start and starts_at < v_day_start + interval '1 day'),
+    'bookings_done_today',     (select count(*) from public.bookings where shop_id = p_shop and status = 'completed' and starts_at >= v_day_start and starts_at < v_day_start + interval '1 day'),
+    'bookings_upcoming_today', (select count(*) from public.bookings where shop_id = p_shop and status in ('pending','confirmed') and starts_at >= now() and starts_at < v_day_start + interval '1 day'),
     'followers',        v_shop.favorites_count,
     'rating_avg',       v_shop.rating_avg,
     'rating_count',     v_shop.rating_count
@@ -980,7 +986,7 @@ create policy shops_delete on public.shops for delete to authenticated using (ow
 grant select on public.shop_payment_methods, public.catalog_items, public.shop_posts to anon, authenticated;
 grant insert, update, delete on public.shop_payment_methods, public.catalog_items, public.shop_posts to authenticated;
 
-create policy spm_read  on public.shop_payment_methods for select using (public.shop_is_visible(shop_id) or public.is_shop_owner(shop_id));
+create policy spm_read  on public.shop_payment_methods for select using ((is_active and public.shop_is_visible(shop_id)) or public.is_shop_owner(shop_id));
 create policy spm_write on public.shop_payment_methods for all to authenticated using (public.is_shop_owner(shop_id)) with check (public.is_shop_owner(shop_id));
 create policy items_read  on public.catalog_items for select using (public.shop_is_visible(shop_id) or public.is_shop_owner(shop_id));
 create policy items_write on public.catalog_items for all to authenticated using (public.is_shop_owner(shop_id)) with check (public.is_shop_owner(shop_id));

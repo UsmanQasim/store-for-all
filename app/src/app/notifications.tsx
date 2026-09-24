@@ -1,59 +1,69 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { useQueryClient } from '@tanstack/react-query';
-import { Stack } from 'expo-router';
-import { FlatList, Pressable, RefreshControl, View } from 'react-native';
+import { Pressable, RefreshControl, View } from 'react-native';
 import { RequireAuth } from '@/components/RequireAuth';
-import { Button, EmptyState, Text } from '@/components/ui';
+import { EmptyState, Icon, LoadingState, Screen, Text, type IconName } from '@/components/ui';
 import { t } from '@/i18n';
 import { timeAgo } from '@/lib/format';
 import { routeFromNotificationData } from '@/lib/notifications';
 import { qk } from '@/lib/queryClient';
 import { useAuth } from '@/providers/AuthProvider';
 import { notificationsApi, useNotifications } from '@/services/social';
-import { useAppTheme } from '@/theme';
+
+const iconFor = (type: string): IconName =>
+  type.startsWith('order') ? 'shopping_bag' : type.startsWith('booking') ? 'event' : type.startsWith('review') ? 'star' : 'campaign';
 
 export default function Notifications() {
-  const { colors } = useAppTheme();
   const { user } = useAuth();
   const qc = useQueryClient();
   const q = useNotifications(!!user);
   const invalidate = () => qc.invalidateQueries({ queryKey: qk.notifications });
+  const list = q.data ?? [];
+  const unread = list.some((n) => !n.read_at);
 
   return (
     <RequireAuth>
-      <Stack.Screen
-        options={{
-          title: t('activity.notifications'),
-          headerRight: () => <Button title={t('activity.markAllRead')} variant="ghost" size="sm" onPress={() => notificationsApi.markAllRead().then(invalidate)} />,
-        }}
-      />
-      <FlatList
-        style={{ backgroundColor: colors.background }}
-        data={q.data ?? []}
-        keyExtractor={(n) => n.id}
-        refreshControl={<RefreshControl refreshing={q.isRefetching} onRefresh={q.refetch} tintColor={colors.primary} />}
-        ListEmptyComponent={q.isLoading ? null : <EmptyState icon="notifications-off-outline" title={t('activity.noNotifications')} />}
-        renderItem={({ item: n }) => (
-          <Pressable
-            onPress={() => {
-              if (!n.read_at) notificationsApi.markRead(n.id).then(invalidate);
-              routeFromNotificationData(n.data);
-            }}
-            style={({ pressed }) => ({ flexDirection: 'row', gap: 12, padding: 16, backgroundColor: n.read_at ? colors.background : colors.primarySoft, opacity: pressed ? 0.8 : 1, borderBottomWidth: 1, borderBottomColor: colors.border })}
-          >
-            <Ionicons
-              name={n.type.startsWith('order') ? 'bag-handle-outline' : n.type.startsWith('booking') ? 'calendar-outline' : n.type.startsWith('review') ? 'star-outline' : 'megaphone-outline'}
-              size={22}
-              color={colors.primary}
-            />
-            <View style={{ flex: 1, gap: 2 }}>
-              <Text variant="bodyStrong">{n.title}</Text>
-              {n.body ? <Text variant="caption" color="textMuted">{n.body}</Text> : null}
-              <Text variant="label" color="textMuted">{timeAgo(n.created_at)}</Text>
-            </View>
-          </Pressable>
+      <Screen
+        title={t('activity.notifications')}
+        right={
+          unread ? (
+            <Pressable onPress={() => notificationsApi.markAllRead().then(invalidate)} accessibilityRole="button" hitSlop={8} className="px-2 py-1">
+              <Text className="font-caption text-caption text-primary font-bold">{t('activity.markAllRead')}</Text>
+            </Pressable>
+          ) : null
+        }
+        refreshControl={<RefreshControl refreshing={q.isRefetching} onRefresh={q.refetch} tintColor="#00543b" />}
+        contentClassName="p-margin gap-space-sm pb-8"
+      >
+        {q.isLoading ? (
+          <LoadingState />
+        ) : list.length === 0 ? (
+          <EmptyState icon="notifications_off" title={t('activity.noNotifications')} />
+        ) : (
+          list.map((n) => (
+            <Pressable
+              key={n.id}
+              accessibilityRole="button"
+              onPress={() => {
+                if (!n.read_at) notificationsApi.markRead(n.id).then(invalidate);
+                routeFromNotificationData(n.data);
+              }}
+              className={`flex-row gap-space-md p-space-md rounded-xl shadow-sm active:opacity-90 ${n.read_at ? 'bg-surface-card' : 'bg-primary-soft'}`}
+            >
+              <View className={`w-10 h-10 rounded-full items-center justify-center ${n.read_at ? 'bg-surface-container' : 'bg-surface-card'}`}>
+                <Icon name={iconFor(n.type)} className="text-primary text-[20px]" />
+              </View>
+              <View className="flex-1 gap-0.5">
+                <View className="flex-row items-start gap-2">
+                  <Text className="flex-1 font-body-lg text-body-lg text-on-surface font-semibold">{n.title}</Text>
+                  {!n.read_at ? <View className="w-2 h-2 rounded-full bg-secondary-container mt-2" /> : null}
+                </View>
+                {n.body ? <Text className="font-body-md text-body-md text-on-surface-variant">{n.body}</Text> : null}
+                <Text className="font-caption text-caption text-text-muted">{timeAgo(n.created_at)}</Text>
+              </View>
+            </Pressable>
+          ))
         )}
-      />
+      </Screen>
     </RequireAuth>
   );
 }

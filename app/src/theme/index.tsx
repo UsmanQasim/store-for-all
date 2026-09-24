@@ -19,8 +19,8 @@ export function AppThemeProvider({ children }: { children: ReactNode }) {
   const scheme = useColorScheme();
   const theme = useMemo<Theme>(
     () => ({
-      dark: scheme === 'dark',
-      colors: scheme === 'dark' ? darkColors : lightColors,
+      dark: false, // Stitch designs are light-only
+      colors: lightColors,
       spacing,
       radius,
       typography,

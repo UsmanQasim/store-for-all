@@ -5,7 +5,7 @@ import { supabase } from '@/lib/supabase';
 import type { Fulfillment, Order, OrderStatus } from '@/types/models';
 
 const ORDER_SELECT =
-  '*, items:order_items(*), shop:shops(id, name, logo_url, slug, phone, currency), customer:profiles(id, full_name, phone, avatar_url)';
+  '*, items:order_items(*, item:catalog_items(image_url)), shop:shops(id, name, logo_url, slug, phone, whatsapp, currency, timezone, address, area, city, lat, lng, category_slug, country_code), customer:profiles(id, full_name, phone, avatar_url)';
 
 export const ordersApi = {
   place: async (v: {

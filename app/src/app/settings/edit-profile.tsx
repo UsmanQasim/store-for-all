@@ -1,8 +1,8 @@
-import { router, Stack } from 'expo-router';
+import { router } from 'expo-router';
 import { useState } from 'react';
 import { Alert, Pressable, View } from 'react-native';
 import { RequireAuth } from '@/components/RequireAuth';
-import { Avatar, Button, Input, Screen, Text } from '@/components/ui';
+import { Avatar, Button, Icon, Input, Screen, Text } from '@/components/ui';
 import { t } from '@/i18n';
 import { toAppError } from '@/lib/errors';
 import { pickAndUpload } from '@/lib/upload';
@@ -32,11 +32,11 @@ export default function EditProfile() {
 
   return (
     <RequireAuth>
-      <Stack.Screen options={{ title: t('profile.editProfile') }} />
-      <Screen footer={<Button title={t('common.save')} onPress={save} loading={busy} fullWidth />}>
+      <Screen title={t('profile.editProfile')} footer={<Button title={t('common.save')} icon="check" onPress={save} loading={busy} fullWidth />}>
         <Pressable
-          style={{ alignSelf: 'center', alignItems: 'center', gap: 8 }}
+          className="self-center items-center gap-2"
           accessibilityRole="button"
+          accessibilityLabel="Change photo"
           onPress={async () => {
             try {
               const url = await pickAndUpload('avatar');
@@ -46,13 +46,18 @@ export default function EditProfile() {
             }
           }}
         >
-          <Avatar uri={avatar} name={name} size={96} />
-          <Text variant="caption" color="primary">{t('common.edit')}</Text>
+          <View>
+            <Avatar uri={avatar} name={name} size={96} />
+            <View className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-primary-container items-center justify-center border-2 border-surface">
+              <Icon name="photo_camera" className="text-on-primary text-[16px]" />
+            </View>
+          </View>
+          <Text className="font-caption text-caption text-primary font-semibold">{t('common.edit')}</Text>
         </Pressable>
-        <View style={{ gap: 14 }}>
-          <Input label={t('auth.fullName')} value={name} onChangeText={setName} maxLength={80} autoComplete="name" />
-          <Input label={t('auth.phone')} value={phone} onChangeText={setPhone} keyboardType="phone-pad" maxLength={20} hint={t('auth.phoneHint')} />
-          <Input label={t('auth.email')} value={user?.email ?? ''} editable={false} />
+        <View className="bg-surface-card rounded-xl p-space-lg shadow-sm gap-space-md">
+          <Input label={t('auth.fullName')} leftIcon="badge" value={name} onChangeText={setName} maxLength={80} autoComplete="name" />
+          <Input label={t('auth.phone')} leftIcon="call" value={phone} onChangeText={setPhone} keyboardType="phone-pad" maxLength={20} hint={t('auth.phoneHint')} />
+          <Input label={t('auth.email')} leftIcon="mail" value={user?.email ?? ''} editable={false} />
         </View>
       </Screen>
     </RequireAuth>

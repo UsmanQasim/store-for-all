@@ -140,6 +140,9 @@ export interface NearbyShop {
   lat: number | null;
   lng: number | null;
   distance_m: number | null;
+  address: string | null;
+  opening_hours: OpeningHours;
+  timezone: string;
 }
 
 export interface PaymentMethod {
@@ -153,6 +156,7 @@ export interface PaymentMethod {
   qr_image_url: string | null;
   note: string | null;
   is_primary: boolean;
+  is_active: boolean;
   sort: number;
 }
 
@@ -176,6 +180,8 @@ export interface Slot {
   remaining: number;
 }
 
+export type ShopEmbed = Pick<Shop, 'id' | 'name' | 'logo_url' | 'slug' | 'phone' | 'whatsapp' | 'currency' | 'timezone' | 'address' | 'area' | 'city' | 'lat' | 'lng' | 'category_slug' | 'country_code'>;
+
 export interface Booking {
   id: UUID;
   code: string;
@@ -190,7 +196,7 @@ export interface Booking {
   customer_note: string | null;
   owner_note: string | null;
   created_at: string;
-  shop?: Pick<Shop, 'id' | 'name' | 'logo_url' | 'slug' | 'phone' | 'currency' | 'timezone'>;
+  shop?: ShopEmbed;
   customer?: Pick<Profile, 'id' | 'full_name' | 'phone' | 'avatar_url'> | null;
 }
 
@@ -203,6 +209,7 @@ export interface OrderItem {
   unit_price: number;
   quantity: number;
   line_total: number;
+  item?: { image_url: string | null } | null;
 }
 
 export interface Order {
@@ -220,7 +227,7 @@ export interface Order {
   created_at: string;
   updated_at: string;
   items?: OrderItem[];
-  shop?: Pick<Shop, 'id' | 'name' | 'logo_url' | 'slug' | 'phone' | 'currency'>;
+  shop?: ShopEmbed;
   customer?: Pick<Profile, 'id' | 'full_name' | 'phone' | 'avatar_url'> | null;
 }
 
@@ -264,6 +271,8 @@ export interface ShopDashboard {
   orders_open: number;
   orders_new: number;
   revenue_today: number;
+  bookings_done_today: number;
+  bookings_upcoming_today: number;
   followers: number;
   rating_avg: number;
   rating_count: number;

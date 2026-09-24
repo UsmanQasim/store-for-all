@@ -1,21 +1,16 @@
 import { Pressable, Switch, View } from 'react-native';
-import { DAY_KEYS } from '@/lib/format';
+import { DAY_KEYS, to12h } from '@/lib/format';
 import { t } from '@/i18n';
-import { useAppTheme } from '@/theme';
 import type { DayKey, OpeningHours } from '@/types/models';
-import { Text } from './ui';
+import { Text } from './nw';
 
 const LABEL: Record<DayKey, string> = { mon: 'Mon', tue: 'Tue', wed: 'Wed', thu: 'Thu', fri: 'Fri', sat: 'Sat', sun: 'Sun' };
 const TIMES = Array.from({ length: 48 }, (_, i) => `${String(Math.floor(i / 2)).padStart(2, '0')}:${i % 2 ? '30' : '00'}`);
 
-export const DEFAULT_HOURS: OpeningHours = Object.fromEntries(
-  DAY_KEYS.map((d) => [d, d === 'sun' ? [] : [{ open: '10:00', close: '22:00' }]]),
-) as OpeningHours;
+export const DEFAULT_HOURS: OpeningHours = Object.fromEntries(DAY_KEYS.map((d) => [d, d === 'sun' ? [] : [{ open: '10:00', close: '22:00' }]])) as OpeningHours;
 
-/** Simple one-range-per-day editor; tap a time to cycle in 30-min steps. */
+/** One range per day; tap a time for +30 min, long-press for −30 min. */
 export function HoursEditor({ value, onChange }: { value: OpeningHours; onChange: (v: OpeningHours) => void }) {
-  const { colors, radius } = useAppTheme();
-
   const set = (d: DayKey, range: { open: string; close: string } | null) => onChange({ ...value, [d]: range ? [range] : [] });
   const step = (time: string, dir: 1 | -1) => TIMES[(TIMES.indexOf(time) + dir + TIMES.length) % TIMES.length]!;
 
@@ -24,34 +19,35 @@ export function HoursEditor({ value, onChange }: { value: OpeningHours; onChange
       onPress={onPress}
       onLongPress={onLong}
       accessibilityRole="button"
+      accessibilityLabel={to12h(time)}
       accessibilityHint="Tap for +30 minutes, long-press for −30 minutes"
-      style={{ minHeight: 40, minWidth: 68, borderRadius: radius.sm, borderWidth: 1, borderColor: colors.border, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.surfaceAlt }}
+      className="h-10 min-w-[84px] px-2 rounded-lg bg-surface-container items-center justify-center"
     >
-      <Text variant="bodyStrong">{time}</Text>
+      <Text className="font-label-sm text-label-sm text-on-surface font-semibold">{to12h(time)}</Text>
     </Pressable>
   );
 
   return (
-    <View style={{ gap: 8 }}>
+    <View className="gap-2">
+      <Text className="font-caption text-caption text-text-muted">Tap a time for +30 min · long-press for −30 min</Text>
       {DAY_KEYS.map((d) => {
         const r = value[d]?.[0];
         return (
-          <View key={d} style={{ flexDirection: 'row', alignItems: 'center', gap: 10, minHeight: 48 }}>
-            <Text variant="bodyStrong" style={{ width: 44 }}>{LABEL[d]}</Text>
-            <Switch
-              value={!!r}
-              onValueChange={(on) => set(d, on ? { open: '10:00', close: '22:00' } : null)}
-              trackColor={{ true: colors.primary, false: colors.border }}
-              accessibilityLabel={`${LABEL[d]} open`}
-            />
+          <View key={d} className={`flex-row items-center gap-2 min-h-[52px] px-2 rounded-lg ${r ? 'bg-surface-container-low' : 'bg-surface-alt'}`}>
+            <Text className="font-body-lg text-body-lg text-on-surface w-10">{LABEL[d]}</Text>
+            <Switch value={!!r} onValueChange={(on) => set(d, on ? { open: '10:00', close: '22:00' } : null)} trackColor={{ true: '#00543b', false: '#bec9c1' }} thumbColor="#FFFFFF" accessibilityLabel={`${LABEL[d]} open`} />
             {r ? (
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, flex: 1, justifyContent: 'flex-end' }}>
+              <View className="flex-row items-center gap-1.5 flex-1 justify-end">
                 <TimeBtn time={r.open} onPress={() => set(d, { ...r, open: step(r.open, 1) })} onLong={() => set(d, { ...r, open: step(r.open, -1) })} />
-                <Text color="textMuted">–</Text>
+                <Text className="text-text-muted">–</Text>
                 <TimeBtn time={r.close} onPress={() => set(d, { ...r, close: step(r.close, 1) })} onLong={() => set(d, { ...r, close: step(r.close, -1) })} />
               </View>
             ) : (
-              <Text color="textMuted" style={{ flex: 1, textAlign: 'right' }}>{t('business.closedDay')}</Text>
+              <View className="flex-1 items-end">
+                <View className="px-2 py-0.5 rounded-full bg-error-container">
+                  <Text className="font-label-sm text-label-sm text-on-error-container">{t('business.closedDay')}</Text>
+                </View>
+              </View>
             )}
           </View>
         );

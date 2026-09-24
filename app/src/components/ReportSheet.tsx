@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { Alert, Modal, Pressable, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { toAppError } from '@/lib/errors';
 import { t } from '@/i18n';
 import { moderationApi } from '@/services/social';
-import { useAppTheme } from '@/theme';
 import type { ReportReason } from '@/types/models';
-import { Button, Input, ListRow, Text } from './ui';
+import { SafeAreaView } from './nw';
+import { Button, Input, Text } from './ui';
 
 const REASONS: ReportReason[] = ['spam', 'offensive', 'harassment', 'fake', 'scam', 'other'];
 
@@ -22,7 +21,6 @@ export function ReportSheet({
   targetType: 'review' | 'shop' | 'post';
   targetId: string;
 }) {
-  const { colors, radius } = useAppTheme();
   const [reason, setReason] = useState<ReportReason | null>(null);
   const [details, setDetails] = useState('');
   const [busy, setBusy] = useState(false);
@@ -45,20 +43,30 @@ export function ReportSheet({
 
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
-      <Pressable style={{ flex: 1, backgroundColor: colors.overlay }} onPress={onClose} accessibilityLabel={t('common.close')} />
-      <SafeAreaView edges={['bottom']} style={{ backgroundColor: colors.surface, borderTopLeftRadius: radius.xl, borderTopRightRadius: radius.xl }}>
-        <View style={{ padding: 20, gap: 8 }}>
-          <Text variant="h2">{t('reviews.report')}</Text>
-          {REASONS.map((r) => (
-            <ListRow
-              key={r}
-              title={t(`reviews.reasons.${r}`)}
-              onPress={() => setReason(r)}
-              right={<View style={{ width: 20, height: 20, borderRadius: 10, borderWidth: 2, borderColor: colors.primary, backgroundColor: reason === r ? colors.primary : 'transparent' }} />}
-            />
-          ))}
+      <Pressable className="flex-1 bg-black/40" onPress={onClose} accessibilityLabel={t('common.close')} />
+      <SafeAreaView edges={['bottom']} className="bg-surface rounded-t-2xl">
+        <View className="p-5 gap-2">
+          <View className="self-center w-10 h-1 rounded-full bg-outline-variant mb-2" />
+          <Text className="font-headline-md text-headline-md text-on-surface mb-1">{t('reviews.report')}</Text>
+          {REASONS.map((r) => {
+            const on = reason === r;
+            return (
+              <Pressable
+                key={r}
+                onPress={() => setReason(r)}
+                accessibilityRole="radio"
+                accessibilityState={{ checked: on }}
+                className={`flex-row items-center justify-between min-h-[48px] px-space-md rounded-xl ${on ? 'bg-primary-soft' : 'bg-surface-card'}`}
+              >
+                <Text className="font-body-lg text-body-lg text-on-surface">{t(`reviews.reasons.${r}`)}</Text>
+                <View className={`w-5 h-5 rounded-full border-2 border-primary items-center justify-center`}>
+                  {on ? <View className="w-2.5 h-2.5 rounded-full bg-primary" /> : null}
+                </View>
+              </Pressable>
+            );
+          })}
           {reason === 'other' ? <Input value={details} onChangeText={setDetails} placeholder="Tell us more" multiline maxLength={500} /> : null}
-          <Button title={t('reviews.report')} onPress={submit} disabled={!reason} loading={busy} variant="danger" />
+          <Button title={t('reviews.report')} icon="flag" onPress={submit} disabled={!reason} loading={busy} variant="danger" className="mt-2" />
         </View>
       </SafeAreaView>
     </Modal>

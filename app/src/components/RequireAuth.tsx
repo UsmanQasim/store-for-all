@@ -9,8 +9,8 @@ export function RequireAuth({ children, body }: { children: ReactNode; body?: st
   const { user } = useAuth();
   if (user) return <>{children}</>;
   return (
-    <Screen scroll={false}>
-      <EmptyState icon="person-circle-outline" title={t('common.signInToContinue')} body={body ?? t('profile.guestBody')} action={t('common.signIn')} onAction={() => router.push('/sign-in')} />
+    <Screen title="" scroll={false} contentClassName="flex-1 justify-center p-margin">
+      <EmptyState icon="account_circle" title={t('common.signInToContinue')} body={body ?? t('profile.guestBody')} action={t('common.signIn')} onAction={() => router.push('/sign-in')} />
     </Screen>
   );
 }

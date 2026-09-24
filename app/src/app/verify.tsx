@@ -1,6 +1,7 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Button, Input, Screen, Text } from '@/components/ui';
+import { View } from 'react-native';
+import { Button, Icon, Input, Screen, Text } from '@/components/ui';
 import { t } from '@/i18n';
 import { toAppError } from '@/lib/errors';
 import { registerForPush } from '@/lib/notifications';
@@ -40,9 +41,14 @@ export default function Verify() {
   };
 
   return (
-    <Screen footer={<Button title={t('auth.verify')} onPress={() => submit()} loading={busy} fullWidth />}>
-      <Text variant="h1">{t('auth.verifyTitle')}</Text>
-      <Text color="textMuted">{t('auth.verifySubtitle', { email: email ?? '' })}</Text>
+    <Screen title="" footer={<Button title={t('auth.verify')} icon="verified_user" onPress={() => submit()} loading={busy} fullWidth />}>
+      <View className="gap-space-sm pt-space-md">
+        <View className="w-14 h-14 rounded-2xl bg-primary-soft items-center justify-center">
+          <Icon name="mark_email_read" className="text-primary text-[28px]" />
+        </View>
+        <Text className="font-headline-lg text-headline-lg text-on-surface">{t('auth.verifyTitle')}</Text>
+        <Text className="font-body-md text-body-md text-text-muted">{t('auth.verifySubtitle', { email: email ?? '' })}</Text>
+      </View>
       <Input
         label={t('auth.code')}
         value={code}
@@ -56,7 +62,7 @@ export default function Verify() {
         autoComplete="one-time-code"
         autoFocus
         maxLength={6}
-        style={{ fontSize: 24, letterSpacing: 8 }}
+        style={{ fontSize: 24, letterSpacing: 8, fontFamily: 'PlusJakartaSans_700Bold' }}
         error={error}
       />
       <Button

@@ -73,6 +73,27 @@ export function isOpenNow(hours: OpeningHours | null | undefined, timeZone: stri
   return inToday || spill;
 }
 
+const DAY_NAMES: Record<DayKey, string> = { mon: 'Monday', tue: 'Tuesday', wed: 'Wednesday', thu: 'Thursday', fri: 'Friday', sat: 'Saturday', sun: 'Sunday' };
+
+/** "09:30" → "9:30 AM" */
+export function to12h(hhmm: string): string {
+  const [h, m] = hhmm.split(':').map(Number) as [number, number];
+  return `${((h + 11) % 12) + 1}:${String(m).padStart(2, '0')} ${h < 12 ? 'AM' : 'PM'}`;
+}
+
+/** Groups consecutive days with identical hours: [{ label: 'Monday – Saturday', value: '10:00 AM – 10:00 PM' }, { label: 'Sunday', closed: true }]. */
+export function groupHours(hours: OpeningHours | null | undefined): { label: string; value: string; closed: boolean }[] {
+  const val = (d: DayKey) => (hours?.[d] ?? []).map((r) => `${to12h(r.open)} – ${to12h(r.close)}`).join(', ');
+  const out: { from: DayKey; to: DayKey; value: string }[] = [];
+  for (const d of DAY_KEYS) {
+    const v = val(d);
+    const last = out[out.length - 1];
+    if (last && last.value === v) last.to = d;
+    else out.push({ from: d, to: d, value: v });
+  }
+  return out.map((g) => ({ label: g.from === g.to ? DAY_NAMES[g.from] : `${DAY_NAMES[g.from]} – ${DAY_NAMES[g.to]}`, value: g.value, closed: !g.value }));
+}
+
 export function initials(name?: string | null): string {
   if (!name) return '?';
   return name
@@ -81,4 +102,13 @@ export function initials(name?: string | null): string {
     .slice(0, 2)
     .map((p) => p[0]!.toUpperCase())
     .join('');
+}
+
+/** Great-circle distance in metres (null when either point is unknown). */
+export function distanceBetween(a: { lat: number; lng: number } | null | undefined, lat: number | null | undefined, lng: number | null | undefined): number | null {
+  if (!a || lat == null || lng == null) return null;
+  const R = 6371e3;
+  const rad = (d: number) => (d * Math.PI) / 180;
+  const x = Math.sin(rad(lat - a.lat) / 2) ** 2 + Math.cos(rad(a.lat)) * Math.cos(rad(lat)) * Math.sin(rad(lng - a.lng) / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(x));
 }

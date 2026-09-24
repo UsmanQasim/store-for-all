@@ -1,8 +1,7 @@
-import { Image } from 'expo-image';
-import { router, Stack, useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Alert, View } from 'react-native';
-import { Button, Chip, Input, Screen, SwitchRow, Text } from '@/components/ui';
+import { Button, Chip, Image, Input, Screen, SwitchRow, Text } from '@/components/ui';
 import { t } from '@/i18n';
 import { toAppError } from '@/lib/errors';
 import { PAYMENT_LABELS, paymentTypesFor } from '@/lib/payments';
@@ -61,6 +60,7 @@ export default function PaymentEditor() {
         qr_image_url: qr,
         note: note.trim() || null,
         is_primary: primary,
+        is_active: existing?.is_active ?? true,
         sort: existing?.sort ?? list.data?.length ?? 0,
       });
       router.back();
@@ -70,12 +70,18 @@ export default function PaymentEditor() {
   };
 
   return (
-    <Screen footer={<Button title={t('common.save')} onPress={submit} loading={save.isPending} fullWidth />}>
-      <Stack.Screen options={{ title: t('business.addPayment') }} />
-      <Text variant="caption" color="textMuted">{t('business.paymentType')}</Text>
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
-        {types.map((ty) => <Chip key={ty} label={PAYMENT_LABELS[ty]} selected={type === ty} onPress={() => setType(ty)} />)}
+    <Screen
+      title={existing ? 'Edit payment method' : t('business.addPayment')}
+      subtitle={shop.data?.name}
+      footer={<Button title={t('common.save')} icon="check" onPress={submit} loading={save.isPending} fullWidth />}
+    >
+      <View className="gap-space-sm">
+        <Text className="font-label-sm text-label-sm text-text-muted uppercase tracking-wider">{t('business.paymentType')}</Text>
+        <View className="flex-row flex-wrap gap-2">
+          {types.map((ty) => <Chip key={ty} label={PAYMENT_LABELS[ty]} selected={type === ty} onPress={() => setType(ty)} />)}
+        </View>
       </View>
+      <View className="bg-surface-card rounded-xl p-space-lg shadow-sm gap-space-md">
       <Input label={t('business.accountTitle')} value={title} onChangeText={setTitle} maxLength={80} autoCapitalize="words" />
       <Input label={numberLabel} value={number} onChangeText={setNumber} maxLength={64} keyboardType={type === 'upi' || type === 'paypal' || type === 'wise' ? 'email-address' : 'number-pad'} autoCapitalize="none" />
       {isBank ? (
@@ -85,10 +91,11 @@ export default function PaymentEditor() {
         </>
       ) : null}
       <Input label={`Note (${t('common.optional')})`} value={note} onChangeText={setNote} maxLength={200} placeholder="e.g. Send screenshot on WhatsApp" />
+      </View>
       <Button
-        title={qr ? '✓ QR uploaded — replace' : t('business.paymentQr')}
+        title={qr ? 'QR uploaded — replace' : t('business.paymentQr')}
         variant="secondary"
-        icon="qr-code-outline"
+        icon={qr ? 'check_circle' : 'qr_code_2'}
         onPress={async () => {
           try {
             const url = await pickAndUpload('payment-qr', { aspect: [1, 1], maxWidth: 900 });
@@ -98,16 +105,25 @@ export default function PaymentEditor() {
           }
         }}
       />
-      {qr ? <Image source={{ uri: qr }} style={{ width: 160, height: 160, alignSelf: 'center', borderRadius: 12 }} contentFit="contain" /> : null}
-      <SwitchRow title={t('business.primary')} value={primary} onValueChange={setPrimary} />
+      {qr ? <Image source={{ uri: qr }} className="w-40 h-40 self-center rounded-xl bg-surface-card" contentFit="contain" /> : null}
+      <View className="bg-surface-card rounded-xl shadow-sm overflow-hidden">
+        <SwitchRow title={t('business.primary')} subtitle="Shown first on your QR poster and pay screen" value={primary} onValueChange={setPrimary} />
+      </View>
       {existing ? (
         <Button
           title={t('common.delete')}
           variant="danger"
-          onPress={async () => {
-            await del.mutateAsync(existing.id);
-            router.back();
-          }}
+          icon="delete"
+          onPress={() =>
+            Alert.alert(t('common.delete'), existing.account_title, [
+              { text: t('common.cancel'), style: 'cancel' },
+              {
+                text: t('common.delete'),
+                style: 'destructive',
+                onPress: () => del.mutateAsync(existing.id).then(() => router.back(), (e) => Alert.alert(toAppError(e).message)),
+              },
+            ])
+          }
         />
       ) : null}
     </Screen>

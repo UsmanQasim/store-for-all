@@ -1,21 +1,19 @@
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Alert, View } from 'react-native';
 import { ReportSheet } from '@/components/ReportSheet';
 import { useEnsureAuth } from '@/components/RequireAuth';
-import { Avatar, Button, Card, EmptyState, IconButton, Input, Screen, Stars, Text } from '@/components/ui';
+import { Avatar, Button, EmptyState, IconButton, Input, Screen, Stars, Text } from '@/components/ui';
 import { t } from '@/i18n';
 import { toAppError } from '@/lib/errors';
 import { timeAgo } from '@/lib/format';
 import { useAuth } from '@/providers/AuthProvider';
 import { useShop } from '@/services/shops';
 import { moderationApi, useMyReview, useReviewMutations, useReviews } from '@/services/social';
-import { useAppTheme } from '@/theme';
 import type { Review } from '@/types/models';
 
 export default function Reviews() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { colors, radius } = useAppTheme();
   const { user } = useAuth();
   const ensureAuth = useEnsureAuth();
   const shop = useShop(id);
@@ -66,60 +64,76 @@ export default function Reviews() {
       { text: t('common.cancel'), style: 'cancel' },
     ]);
 
+  const avg = Number(shop.data?.rating_avg ?? 0);
+  const count = shop.data?.rating_count ?? 0;
+
   return (
-    <Screen>
-      <Stack.Screen options={{ title: t('reviews.title') }} />
+    <Screen title={t('reviews.title')} subtitle={shop.data?.name}>
+      {count ? (
+        <View className="bg-surface-card rounded-xl p-space-lg shadow-sm flex-row items-center gap-space-md">
+          <Text className="font-display text-display text-on-surface">{avg.toFixed(1)}</Text>
+          <View className="gap-1">
+            <Stars value={Math.round(avg)} size={20} />
+            <Text className="font-caption text-caption text-text-muted">{count} {count === 1 ? 'review' : 'reviews'}</Text>
+          </View>
+        </View>
+      ) : null}
 
       {!isOwner ? (
-        <Card style={{ gap: 12 }}>
-          <Text variant="h3">{mine.data ? t('reviews.edit') : t('reviews.write')}</Text>
-          <Stars value={rating} size={32} onChange={(v) => ensureAuth() && setRating(v)} />
+        <View className="bg-surface-card rounded-xl p-space-lg shadow-sm gap-space-md">
+          <Text className="font-headline-sm text-headline-sm text-on-surface">{mine.data ? t('reviews.edit') : t('reviews.write')}</Text>
+          <Stars value={rating} size={36} onChange={(v) => ensureAuth() && setRating(v)} />
           <Input placeholder={t('reviews.comment')} value={comment} onChangeText={setComment} multiline maxLength={1000} />
-          <Button title={t('reviews.submit')} onPress={submit} disabled={rating < 1} loading={m.save.isPending} />
-        </Card>
+          <Button title={t('reviews.submit')} icon="send" onPress={submit} disabled={rating < 1} loading={m.save.isPending} />
+        </View>
       ) : null}
 
       {reviews.data?.length ? (
         reviews.data.map((r) => (
-          <Card key={r.id} style={{ gap: 8 }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-              <Avatar uri={r.author_avatar} name={r.author_name} size={36} />
-              <View style={{ flex: 1 }}>
-                <Text variant="bodyStrong">{r.author_name}</Text>
-                <Text variant="caption" color="textMuted">{timeAgo(r.created_at)}</Text>
+          <View key={r.id} className="bg-surface-card rounded-xl p-space-md shadow-sm gap-2">
+            <View className="flex-row items-center gap-2.5">
+              <Avatar uri={r.author_avatar} name={r.author_name} size={32} />
+              <View className="flex-1">
+                <Text className="font-body-lg text-body-md font-semibold text-on-surface">{r.author_name}</Text>
+                <Text className="font-caption text-[11px] text-text-muted">{timeAgo(r.created_at)}</Text>
               </View>
               <Stars value={r.rating} />
-              {r.author_id !== user?.id ? <IconButton icon="ellipsis-vertical" label={t('reviews.report')} onPress={() => moreActions(r)} size={18} /> : null}
+              {r.author_id !== user?.id ? <IconButton icon="more_vert" label={t('reviews.report')} onPress={() => moreActions(r)} className="w-9 h-9" iconClassName="text-text-muted text-[20px]" /> : null}
             </View>
-            {r.comment ? <Text>{r.comment}</Text> : null}
+            {r.comment ? <Text className="font-body-md text-body-md text-on-surface-variant">{r.comment}</Text> : null}
             {r.owner_reply ? (
-              <View style={{ backgroundColor: colors.surfaceAlt, borderRadius: radius.md, padding: 12, gap: 4 }}>
-                <Text variant="label" color="primary">{t('reviews.ownerReply').toUpperCase()}</Text>
-                <Text variant="caption">{r.owner_reply}</Text>
+              <View className="bg-surface-alt rounded-lg p-3 gap-1 border-l-2 border-primary">
+                <Text className="font-label-sm text-label-sm text-primary font-bold uppercase">{t('reviews.ownerReply')}</Text>
+                <Text className="font-caption text-caption text-on-surface">{r.owner_reply}</Text>
               </View>
             ) : null}
             {isOwner ? (
               replying?.id === r.id ? (
-                <View style={{ gap: 8 }}>
+                <View className="gap-2">
                   <Input value={replying.text} onChangeText={(text) => setReplying({ id: r.id, text })} multiline maxLength={1000} autoFocus />
                   <Button
                     title={t('reviews.reply')}
                     size="sm"
+                    icon="reply"
                     loading={m.reply.isPending}
                     onPress={async () => {
-                      await m.reply.mutateAsync({ reviewId: r.id, reply: replying.text });
-                      setReplying(null);
+                      try {
+                        await m.reply.mutateAsync({ reviewId: r.id, reply: replying.text });
+                        setReplying(null);
+                      } catch (e) {
+                        Alert.alert(toAppError(e).message);
+                      }
                     }}
                   />
                 </View>
               ) : (
-                <Button title={t('reviews.reply')} variant="ghost" size="sm" icon="chatbubble-outline" onPress={() => setReplying({ id: r.id, text: r.owner_reply ?? '' })} />
+                <Button title={t('reviews.reply')} variant="ghost" size="sm" icon="chat_bubble" onPress={() => setReplying({ id: r.id, text: r.owner_reply ?? '' })} />
               )
             ) : null}
-          </Card>
+          </View>
         ))
       ) : reviews.isLoading ? null : (
-        <EmptyState icon="star-outline" title={t('reviews.empty')} />
+        <EmptyState icon="star" title={t('reviews.empty')} />
       )}
 
       {reportTarget ? <ReportSheet visible onClose={() => setReportTarget(null)} targetType="review" targetId={reportTarget} /> : null}

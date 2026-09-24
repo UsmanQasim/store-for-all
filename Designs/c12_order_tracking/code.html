@@ -1,0 +1,244 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"><meta content="mobile_tab" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "success-green": "#1E8E4E", "error": "#ba1a1a", "on-primary": "#ffffff", "info-soft": "#E4EDFF", "primary-fixed": "#9ff4cc", "tertiary-fixed-dim": "#b1c5ff", "on-surface": "#1d1b18", "on-surface-variant": "#3f4943", "surface-alt": "#F2EFEA", "outline": "#6f7a73", "primary-pressed": "#08573F", "warning-amber": "#A86A00", "success-soft": "#DDF4E6", "tertiary-container": "#0058d3", "inverse-primary": "#83d7b1", "warning-soft": "#FFF1D6", "surface-bright": "#fff8f3", "on-secondary": "#ffffff", "on-tertiary-fixed": "#001947", "inverse-on-surface": "#f6f0ea", "secondary": "#845400", "border-hairline": "#E6E1D9", "primary-container": "#0b6e4f", "surface-card": "#FFFFFF", "info-blue": "#2F6FEB", "surface-container-high": "#ede7e2", "on-background": "#1d1b18", "tertiary": "#0042a3", "secondary-container": "#fda60f", "primary-fixed-dim": "#83d7b1", "surface-dim": "dfd9d4", "secondary-fixed": "#ffddb6", "on-primary-fixed-variant": "#005139", "text-muted": "#6B645C", "on-tertiary": "#ffffff", "on-primary-fixed": "#002115", "on-primary-container": "#98edc6", "secondary-fixed-dim": "#ffb959", "surface-tint": "#056c4d", "primary": "#00543b", "error-container": "#ffdad6", "tertiary-fixed": "#dae2ff", "on-tertiary-container": "#d0dbff", "primary-soft": "#E8F5EF", "surface-container-highest": "#e7e1dc", "on-secondary-fixed-variant": "#643f00", "background": "#fff8f3", "surface-bg": "#FAF8F5", "outline-variant": "#bec9c1", "surface-variant": "#e7e1dc", "surface-container-lowest": "#ffffff", "inverse-surface": "#32302d", "on-secondary-container": "#674100", "accent-soft": "#FFF1D6", "danger-soft": "#FDE7E7", "on-error-container": "#93000a", "danger-red": "#D93F3F", "on-error": "#ffffff", "on-secondary-fixed": "#2a1800", "surface-container": "#f3ede7", "on-tertiary-fixed-variant": "#00419f", "surface-container-low": "#f9f2ed", "surface": "#FAF8F5" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "space-sm": "0.5rem", "gutter": "1rem", "space-lg": "1rem", "margin": "1rem", "space-xs": "0.25rem", "space-xl": "1.25rem", "space-md": "0.75rem" }, fontFamily: { "caption": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "display": ["Plus Jakarta Sans"], "price-display": ["Plus Jakarta Sans"], "label-sm": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"] }, fontSize: { "caption": ["13px", { "lineHeight": "18px", "fontWeight": "500" }], "headline-md": ["20px", { "lineHeight": "26px", "fontWeight": "700" }], "headline-sm": ["17px", { "lineHeight": "22px", "fontWeight": "600" }], "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }], "headline-lg": ["24px", { "lineHeight": "30px", "fontWeight": "700" }], "display": ["30px", { "lineHeight": "36px", "letterSpacing": "-0.5px", "fontWeight": "800" }], "price-display": ["16px", { "lineHeight": "20px", "fontWeight": "700" }], "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.4px", "fontWeight": "600" }], "body-lg": ["15px", { "lineHeight": "22px", "fontWeight": "600" }] } } } };</script><style>@layer base{html,body{width:100%;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased flex flex-col min-h-screen"><header class="fixed top-0 inset-x-0 z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] pt-safe"><div class="h-16 px-margin flex items-center justify-between"><div class="flex items-center gap-space-sm"><img alt="Dukaan Brand Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VIOWuewcqRcyEJN2CTondzZ8Jl3cycM4UgCtJ9lqtPBd4ZtzogOvT1nl9pn6jDB1PZDREze1RfLTy1ZRtPBfbE5dZlS76bzCbnhWCsh5nYcfv-dRlFpVbdsdDg91GMJldNuAfVgvla6fehK5bBrdJTfx-i3x7-qpyK-tchpuCoENObZVLxRhNsTN3-HPtmP1QhklbtciMMq7BlpUIBKUmXH6WEe5N0Zg05NgQC98b7EMsSmWikMMSmuw"><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary tracking-tight">Dukaan</span><span class="font-caption text-caption text-text-muted">Home</span></div></div><div class="flex items-center gap-space-sm"><button class="w-12 h-12 flex items-center justify-center text-on-surface-variant hover:text-on-surface rounded-full transition-colors"><span class="material-symbols-outlined text-[24px]">notifications</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-sm"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex flex-col relative w-full pt-16 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full pb-8">
+<div class="px-margin pt-space-md pb-space-sm flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<button aria-label="Go back" class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-on-surface active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[22px]">arrow_back</span>
+</button>
+<div>
+<h1 class="font-headline-sm text-headline-sm text-on-surface leading-tight">Order Tracking</h1>
+<p class="font-caption text-caption text-text-muted">Sector C, Gulgasht Colony</p>
+</div>
+</div>
+<a aria-label="Direct helpline" class="w-12 h-12 rounded-full bg-primary-soft text-primary flex items-center justify-center active:scale-95 transition-transform" href="tel:+923001234567">
+<span class="material-symbols-outlined text-[22px]">call</span>
+</a>
+</div>
+<div class="px-margin flex flex-col gap-space-lg mt-space-xs">
+<div class="bg-surface-card rounded-xl p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex items-start justify-between"><div class="flex flex-col gap-0.5">
+  <div class="flex items-center gap-2 flex-wrap">
+    <span class="font-label-sm text-label-sm text-text-muted">ORDER ID:</span>
+    <div class="flex items-center gap-1 shrink-0">
+      <span class="font-headline-sm text-headline-sm tracking-wider font-bold text-on-surface">O-7F3A2C</span>
+      <button aria-label="Copy order id" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-surface-alt active:scale-90 transition" id="copy-btn" onclick="navigator.clipboard.writeText('O-7F3A2C'); document.getElementById('copy-label').innerText = 'Copied!'; setTimeout(() =&gt; document.getElementById('copy-label').innerText = 'content_copy', 2000);" type="button">
+        <span class="material-symbols-outlined text-[16px] text-primary" id="copy-label">content_copy</span>
+      </button>
+    </div>
+  </div>
+  <p class="font-caption text-caption text-text-muted">Placed today at 2:15 PM</p>
+</div>
+<span class="bg-success-soft text-success-green px-2.5 py-1 rounded-full font-label-sm text-label-sm tracking-wider uppercase shrink-0 self-start">
+  Packing In Progress
+</span></div>
+<div class="bg-primary-soft rounded-lg p-space-md flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-xs">
+<span class="material-symbols-outlined text-[20px]">timer</span>
+</div>
+<div>
+<p class="font-caption text-caption text-text-muted leading-none">Estimated Delivery</p>
+<p class="font-headline-sm text-headline-sm text-primary mt-1">20 - 30 mins</p>
+</div>
+</div>
+<span class="font-label-sm text-label-sm text-primary bg-surface-card px-2.5 py-1 rounded-full shadow-xs">By 2:45 PM</span>
+</div>
+<div class="pt-space-xs">
+<div class="relative flex items-center justify-between">
+<div class="absolute left-4 right-4 top-1/2 -translate-y-1/2 h-1 bg-surface-alt -z-0">
+<div class="h-full bg-primary-container w-[50%] transition-all duration-500"></div>
+</div>
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-xs">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface mt-1.5 font-semibold">Placed</span>
+<span class="font-caption text-caption text-text-muted text-[11px] leading-tight">2:15 PM</span>
+</div>
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-xs">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface mt-1.5 font-semibold">Accepted</span>
+<span class="font-caption text-caption text-text-muted text-[11px] leading-tight">2:17 PM</span>
+</div>
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center shadow-xs ring-4 ring-warning-soft animate-pulse">
+<span class="material-symbols-outlined text-[18px]">inventory_2</span>
+</div>
+<span class="font-label-sm text-label-sm text-warning-amber mt-1.5 font-bold">Packing</span>
+<span class="font-caption text-caption text-warning-amber text-[11px] leading-tight">Active</span>
+</div>
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-surface-alt text-text-muted flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px]">two_wheeler</span>
+</div>
+<span class="font-label-sm text-label-sm text-text-muted mt-1.5">Out</span>
+<span class="font-caption text-caption text-text-muted text-[11px] leading-tight">--</span>
+</div>
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-surface-alt text-text-muted flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px]">home</span>
+</div>
+<span class="font-label-sm text-label-sm text-text-muted mt-1.5">Delivered</span>
+<span class="font-caption text-caption text-text-muted text-[11px] leading-tight">--</span>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-card rounded-xl p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-14 h-14 rounded-full overflow-hidden bg-surface-alt shrink-0 shadow-xs">
+<img class="w-full h-full object-cover" data-alt="Portrait photograph of Tariq Bhai, a warm South Asian local shopkeeper in a traditional kurta outside Madina Super Kiryana store, soft golden natural daylight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDul_wG6qG5bc_bPKTptqGlmpJtxc392bXXYPiX2aR89C3VnHC5XgK56Tw5o2dENiUVl24TflupW-i8MRcT77FELtL3Ja6mWp5umP66exvk9w2RUiA6WUeGqUX2HNy94qpc-Um8eUpI6O-u6vggpp_i6kAq-N391iWpTvnG8ElTypI4TRb65YmMUOQUBu7ARYIa3yWA9DowGePVVrzrqfXeZC_HOwM0kk1pd-rcJv4">
+</div>
+<div class="min-w-0 flex-1">
+<div class="flex items-center gap-1">
+<h2 class="font-headline-sm text-headline-sm text-on-surface truncate">Madina Super Kiryana</h2>
+<span class="material-symbols-outlined text-primary text-[18px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<p class="font-caption text-caption text-text-muted">Shopkeeper: Tariq Bhai</p>
+<div class="flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-secondary text-[16px]">motorcycle</span>
+<p class="font-caption text-caption text-on-surface-variant font-medium">Rider: Zubair · On Motorbike</p>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-space-sm pt-space-xs">
+<a class="h-12 rounded-lg bg-surface-alt text-primary font-body-lg text-body-lg flex items-center justify-center gap-2 active:bg-primary-soft transition-colors" href="tel:+923007654321">
+<span class="material-symbols-outlined text-[20px]">phone_in_talk</span>
+          Call Shop
+        </a>
+<a class="h-12 rounded-lg bg-primary-container text-on-primary font-body-lg text-body-lg flex items-center justify-center gap-2 active:bg-primary-pressed transition-colors shadow-xs" href="https://wa.me/923007654321?text=Hello%20Tariq%20Bhai,%20inquiring%20about%20Order%20O-7F3A2C">
+<span class="material-symbols-outlined text-[20px]">chat</span>
+          WhatsApp
+        </a>
+</div>
+</div>
+<div class="bg-surface-card rounded-xl p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between pb-space-xs">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Order Summary</h2>
+<span class="font-caption text-caption text-text-muted">3 Items</span>
+</div>
+<div class="flex flex-col gap-space-md divide-y-0">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-lg overflow-hidden bg-surface-alt shrink-0 shadow-xs">
+<img class="w-full h-full object-cover" data-alt="Traditional South Asian whole wheat chakki atta 10kg burlap flour bag with authentic grain typography in warm earthy packaging." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-S07hEZEWuocie3wQ3vc3txyBBtgYi7hRobUm8yLse9O5WVyisZMGC-_gHYYwWW9vNFj3xUEwEd0CFpthVECSuDwzcUb_9HLpw1RGKYn3lF6UR1lzcURzaMiZCX8CJefUguq6zYoVNXgEbawJmvX5hRJiLZuAUsabm0Bo7YWGU4v2PuCX5KNC5X0cSTXzeRB_dzSD6a3uhHhPkpv8CZMASMDGI5i9ZpF7Pcrjc3I">
+</div>
+<div class="flex-1 min-w-0">
+<h3 class="font-body-lg text-body-lg text-on-surface truncate">Chakki Atta (10kg Bag)</h3>
+<p class="font-caption text-caption text-text-muted">Qty: 2</p>
+</div>
+<span class="font-price-display text-price-display text-primary">Rs 3,600</span>
+</div>
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-lg overflow-hidden bg-surface-alt shrink-0 shadow-xs">
+<img class="w-full h-full object-cover" data-alt="Clean aseptic carton of packaged 1 litre cow milk with green and white branding, standing on wooden grocery shelf." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIXcGTuLIHu_pU0GyBTNCEKAd7by8H0y-anEw4MkldLN6B6CHeJRp4Tse7dAjYpOQ77qHlI45PnnbwVQrjMzvLW6PpdqxabFni8YQIZWOQTSHoq36TNNC-PfrjJ_ilE7yelC2NTXitWcJ-W6MZpEDFENFVPW8Gh6zc7vsiYSbqIh3NqN_fjoPic1JI5XquvNTGbp9XbQpY4kIlMa9eUeHP257naVVL9cBLLnBwXSs">
+</div>
+<div class="flex-1 min-w-0">
+<h3 class="font-body-lg text-body-lg text-on-surface truncate">Olper's Milk (1L Tetra Pack)</h3>
+<p class="font-caption text-caption text-text-muted">Qty: 3</p>
+</div>
+<span class="font-price-display text-price-display text-primary">Rs 840</span>
+</div>
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-lg overflow-hidden bg-surface-alt shrink-0 shadow-xs">
+<img class="w-full h-full object-cover" data-alt="Transparent sealed 1kg pouch of golden yellow split Bengal gram pulses dal chana on rustic grocery store countertop." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFzagEmkMTfgMj6Rwr4DCdcZNtv1f5mosAnth3QzKCobR0kgNro8V_ZYD-xtWaKS-uQyaaLi1GRG2MU1KhQtjncg-ZX-xTVkIRWRZ5bqNIbBnehAGVKcbCXETg6HZIcceQetTmIv3lnx2Uq6NBKua5OasRpVyvhkEc0YGIbZTFNDhQy0Ij5F1fzfqM2PO0K5wZQiX3j27eXTRch4RpvFNmeYbsEXbXhwaTEop0ano">
+</div>
+<div class="flex-1 min-w-0">
+<h3 class="font-body-lg text-body-lg text-on-surface truncate">Dal Chana Cleaned (1kg)</h3>
+<p class="font-caption text-caption text-text-muted">Qty: 1</p>
+</div>
+<span class="font-price-display text-price-display text-primary">Rs 320</span>
+</div>
+</div>
+<div class="bg-surface-alt rounded-lg p-space-md flex flex-col gap-space-xs mt-space-xs">
+<div class="flex justify-between items-center text-text-muted">
+<span class="font-body-md text-body-md">Items Subtotal</span>
+<span class="font-body-md text-body-md text-on-surface">Rs 4,760</span>
+</div>
+<div class="flex justify-between items-center text-text-muted">
+<span class="font-body-md text-body-md">Neighbourhood Delivery Fee</span>
+<span class="font-body-md text-body-md text-on-surface">Rs 100</span>
+</div>
+<div class="pt-space-xs flex justify-between items-center">
+<span class="font-headline-sm text-headline-sm text-on-surface">Total Payable</span>
+<span class="font-headline-md text-headline-md text-primary">Rs 4,860</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-card rounded-xl p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-accent-soft text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">payments</span>
+</div>
+<div>
+<h2 class="font-body-lg text-body-lg text-on-surface">Payment &amp; Settlement</h2>
+<p class="font-caption text-caption text-text-muted">Cash / JazzCash / Raast QR</p>
+</div>
+</div>
+<span class="bg-warning-soft text-warning-amber px-2.5 py-1 rounded-full font-label-sm text-label-sm tracking-wider uppercase">
+          Due At Doorstep
+        </span>
+</div>
+<div class="bg-surface-alt rounded-lg p-space-md flex items-center justify-between">
+<div>
+<p class="font-label-sm text-label-sm text-text-muted">RAAST ID / JAZZCASH</p>
+<p class="font-body-lg text-body-lg font-mono font-bold text-on-surface tracking-wider">0300-7654321</p>
+</div>
+<button class="h-9 px-3 bg-surface-card rounded-lg text-primary font-label-sm text-label-sm shadow-xs active:scale-95 transition" onclick="this.innerHTML='Copied ✓'; setTimeout(()=&gt;this.innerHTML='Copy', 1800);" type="button">
+          Copy
+        </button>
+</div>
+<button class="w-full h-[52px] bg-secondary-container text-on-secondary-container rounded-xl font-body-lg text-body-lg font-bold flex items-center justify-center gap-2 active:scale-[0.98] transition-transform shadow-xs" type="button">
+<span class="material-symbols-outlined text-[20px]">qr_code_2</span>
+        Pay Now via Raast / JazzCash (Rs 4,860)
+      </button>
+</div>
+<div class="bg-surface-card rounded-xl p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-surface-alt text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">location_on</span>
+</div>
+<div>
+<h2 class="font-body-lg text-body-lg text-on-surface">Delivery Address</h2>
+<p class="font-caption text-caption text-text-muted">Home Destination</p>
+</div>
+</div>
+<div class="bg-surface-alt rounded-lg p-space-md flex flex-col gap-1">
+<p class="font-body-lg text-body-lg text-on-surface">House 14, Street 7</p>
+<p class="font-body-md text-body-md text-text-muted">Gulgasht Colony, Sector C, Multan</p>
+</div>
+<div class="bg-info-soft rounded-lg p-space-md flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-info-blue text-[20px] shrink-0 mt-0.5">sticky_note_2</span>
+<div>
+<p class="font-label-sm text-label-sm text-info-blue uppercase">Note for Rider</p>
+<p class="font-body-md text-body-md text-on-surface mt-0.5">"Please ring the bell twice and bring fresh milk packets."</p>
+</div>
+</div>
+</div>
+<div class="bg-surface-alt rounded-xl p-space-md flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-full bg-primary-soft text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[22px]">verified_user</span>
+</div>
+<div>
+<p class="font-body-lg text-body-lg text-on-surface">Dukaan Neighbourhood Trust</p>
+<p class="font-caption text-caption text-text-muted">Verified Kiryana store with direct local contact, honest prices, and authentic stock guarantee.</p>
+</div>
+</div>
+</div>
+</div></main><nav class="fixed bottom-0 inset-x-0 z-50 pb-safe bg-surface-card/95 backdrop-blur-xl shadow-[0_-2px_12px_rgba(0,0,0,0.05)]" data-active-classes="text-primary font-body-lg"><div class="relative flex items-center justify-around h-16 px-space-xs"><a class="flex-1 flex flex-col items-center justify-center min-h-[48px] py-1 text-text-muted hover:text-primary transition-colors" data-path="home" href="#"><span class="material-symbols-outlined text-[24px]">storefront</span><span class="font-label-sm text-label-sm mt-0.5">Home</span></a><a class="flex-1 flex flex-col items-center justify-center min-h-[48px] py-1 text-text-muted hover:text-primary transition-colors" data-path="explore" href="#"><span class="material-symbols-outlined text-[24px]">explore</span><span class="font-label-sm text-label-sm mt-0.5">Explore</span></a><div class="flex-1 flex flex-col items-center justify-center relative"><a class="absolute -top-7 w-[52px] h-[52px] rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-[0_8px_20px_rgba(0,0,0,0.14)] ring-4 ring-surface-card active:bg-primary-pressed transition-transform active:scale-95" data-path="scan-qr" href="#"><span class="material-symbols-outlined text-[28px]">qr_code_scanner</span></a><span class="font-label-sm text-label-sm text-text-muted mt-7">Scan</span></div><a class="flex-1 flex flex-col items-center justify-center min-h-[48px] py-1 text-text-muted hover:text-primary transition-colors" data-path="activity" href="#"><span class="material-symbols-outlined text-[24px]">receipt_long</span><span class="font-label-sm text-label-sm mt-0.5">Activity</span></a><a class="flex-1 flex flex-col items-center justify-center min-h-[48px] py-1 text-text-muted hover:text-primary transition-colors" data-path="profile" href="#"><span class="material-symbols-outlined text-[24px]">account_circle</span><span class="font-label-sm text-label-sm mt-0.5">Profile</span></a></div></nav>
+
+</body></html>

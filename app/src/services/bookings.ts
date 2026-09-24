@@ -5,7 +5,7 @@ import { supabase } from '@/lib/supabase';
 import type { Booking, BookingStatus, Slot } from '@/types/models';
 
 const BOOKING_SELECT =
-  '*, shop:shops(id, name, logo_url, slug, phone, currency, timezone), customer:profiles(id, full_name, phone, avatar_url)';
+  '*, shop:shops(id, name, logo_url, slug, phone, whatsapp, currency, timezone, address, area, city, lat, lng, category_slug, country_code), customer:profiles(id, full_name, phone, avatar_url)';
 
 export const bookingsApi = {
   slots: async (shopId: string, date: string, serviceId?: string | null) =>
@@ -53,6 +53,15 @@ export const bookingsApi = {
 
   get: async (id: string) =>
     unwrap(await supabase.from('bookings').select(BOOKING_SELECT).eq('id', id).single()) as Booking,
+
+  /** Completed visits per customer at a shop (owner view: "Regular (4 visits)" / "New customer"). */
+  // ponytail: counts client-side from the last 5000 completed bookings; move to a grouped RPC if a shop outgrows that.
+  visits: async (shopId: string) => {
+    const rows = unwrap(await supabase.from('bookings').select('customer_id').eq('shop_id', shopId).eq('status', 'completed').limit(5000)) as { customer_id: string }[];
+    const m = new Map<string, number>();
+    for (const r of rows) m.set(r.customer_id, (m.get(r.customer_id) ?? 0) + 1);
+    return m;
+  },
 };
 
 export function useSlots(shopId: string | undefined, date: string, serviceId?: string | null) {
@@ -74,6 +83,10 @@ export function useShopBookings(shopId: string | undefined) {
     queryFn: () => bookingsApi.forShop(shopId!),
     enabled: !!shopId,
   });
+}
+
+export function useCustomerVisits(shopId: string | undefined) {
+  return useQuery({ queryKey: [...qk.shopBookings(shopId ?? ''), 'visits'], queryFn: () => bookingsApi.visits(shopId!), enabled: !!shopId, staleTime: 5 * 60_000 });
 }
 
 export function useBooking(id: string | undefined) {

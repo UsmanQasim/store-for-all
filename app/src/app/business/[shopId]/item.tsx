@@ -1,19 +1,16 @@
-import { Image } from 'expo-image';
-import { router, Stack, useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Alert, Pressable } from 'react-native';
-import { Button, Input, Screen, Segmented, SwitchRow, Text } from '@/components/ui';
+import { Alert, Pressable, View } from 'react-native';
+import { Button, Icon, Image, Input, Screen, Segmented, SwitchRow, Text } from '@/components/ui';
 import { t } from '@/i18n';
 import { toAppError } from '@/lib/errors';
 import { pickAndUpload } from '@/lib/upload';
 import { useCatalog, useDeleteItem, useSaveItem } from '@/services/catalog';
 import { useShop } from '@/services/shops';
-import { useAppTheme } from '@/theme';
 import type { ItemKind } from '@/types/models';
 
 export default function ItemEditor() {
   const { shopId, itemId, kind: kindParam } = useLocalSearchParams<{ shopId: string; itemId?: string; kind?: ItemKind }>();
-  const { colors, radius } = useAppTheme();
   const shop = useShop(shopId);
   const items = useCatalog(shopId);
   const existing = items.data?.find((i) => i.id === itemId);
@@ -65,8 +62,11 @@ export default function ItemEditor() {
   };
 
   return (
-    <Screen footer={<Button title={t('common.save')} onPress={submit} loading={save.isPending} fullWidth />}>
-      <Stack.Screen options={{ title: existing ? t('business.editItem') : t('business.addItem') }} />
+    <Screen
+      title={existing ? t('business.editItem') : t('business.addItem')}
+      subtitle={shop.data?.name}
+      footer={<Button title={t('common.save')} icon="check" onPress={submit} loading={save.isPending} fullWidth />}
+    >
       {!existing ? <Segmented<ItemKind> value={kind} onChange={setKind} options={[{ value: 'service', label: t('business.service') }, { value: 'product', label: t('business.product') }]} /> : null}
       <Pressable
         onPress={async () => {
@@ -78,24 +78,43 @@ export default function ItemEditor() {
           }
         }}
         accessibilityRole="button"
-        style={{ height: 140, width: 140, alignSelf: 'center', borderRadius: radius.lg, backgroundColor: colors.primarySoft, overflow: 'hidden', alignItems: 'center', justifyContent: 'center' }}
+        accessibilityLabel="Item photo"
+        className="h-36 w-36 self-center rounded-xl bg-primary-soft overflow-hidden items-center justify-center border-2 border-dashed border-primary/30"
       >
-        {image ? <Image source={{ uri: image }} style={{ width: '100%', height: '100%' }} contentFit="cover" /> : <Text color="primary">+ Photo</Text>}
+        {image ? (
+          <Image source={{ uri: image }} className="w-full h-full" contentFit="cover" />
+        ) : (
+          <View className="items-center gap-1">
+            <Icon name="add_a_photo" className="text-primary text-[28px]" />
+            <Text className="font-caption text-caption text-primary font-semibold">Add photo</Text>
+          </View>
+        )}
       </Pressable>
+      <View className="bg-surface-card rounded-xl p-space-lg shadow-sm gap-space-md">
       <Input label={t('business.itemName')} value={name} onChangeText={setName} maxLength={100} />
       <Input label={`${t('business.price')} (${shop.data?.currency ?? ''})`} value={price} onChangeText={(v) => setPrice(v.replace(/[^\d.]/g, ''))} keyboardType="decimal-pad" />
       {kind === 'product' ? <Input label={t('business.unit')} value={unit} onChangeText={setUnit} maxLength={20} /> : <Input label={t('business.duration')} value={duration} onChangeText={(v) => setDuration(v.replace(/\D/g, ''))} keyboardType="number-pad" />}
-      <Input label={`${t('business.description')} (${t('common.optional')})`} value={description} onChangeText={setDescription} multiline maxLength={500} />
-      <SwitchRow title={t('business.available')} value={available} onValueChange={setAvailable} />
+      <Input label={`Description (${t('common.optional')})`} value={description} onChangeText={setDescription} multiline maxLength={500} />
+      </View>
+      <View className="bg-surface-card rounded-xl shadow-sm overflow-hidden">
+        <SwitchRow title={t('business.available')} subtitle="Hidden items don’t show to customers" value={available} onValueChange={setAvailable} />
+      </View>
       {existing ? (
         <Button
           title={t('common.delete')}
           variant="danger"
+          icon="delete"
           loading={del.isPending}
-          onPress={async () => {
-            await del.mutateAsync(existing.id);
-            router.back();
-          }}
+          onPress={() =>
+            Alert.alert(t('common.delete'), existing.name, [
+              { text: t('common.cancel'), style: 'cancel' },
+              {
+                text: t('common.delete'),
+                style: 'destructive',
+                onPress: () => del.mutateAsync(existing.id).then(() => router.back(), (e) => Alert.alert(toAppError(e).message)),
+              },
+            ])
+          }
         />
       ) : null}
     </Screen>

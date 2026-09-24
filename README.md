@@ -51,18 +51,24 @@ Most screens also work in Expo Go.
 
 Checks: `npm run typecheck` · `npx expo-doctor` · `npx expo export --platform android` (full bundle).
 
+**UI stack:** screens are built with **NativeWind** (Tailwind classes) using the exact Stitch tokens in `app/tailwind.config.js` — the classes in each screen mirror the Stitch export (`designs/<id>/code.html`). Shared pieces: `src/components/ui` (buttons, inputs, chips…), `src/components/shell.tsx` (headers, customer/business nav bars).
+
+**Icons:** Material Symbols, bundled as SVG paths (no icon font download). To use a new icon, add its name to `app/scripts/icon-names.txt` and run `node scripts/gen-icons.cjs`; TypeScript will reject unknown icon names.
+
+**App icon / splash** are generated from the brand logo (`designs/dukaan_brand_logo`) into `app/assets/`.
+
 **Release:** `npm run build:prod` (AAB) → `npm run submit` (uploads to the internal track). See `docs/PLAY_COMPLIANCE.md` before going public.
 
 ## 3. Landing site
 
-`landing/` is plain HTML/CSS — deploy the folder to Cloudflare Pages, Netlify or Vercel (redirect/rewrite for `/s/*` is included for each).
+`landing/` is static HTML — `index.html` is the Stitch landing design with CSS precompiled to `assets/landing.css` (no Tailwind CDN at runtime). If you edit classes in `index.html`, rebuild the CSS: `cd landing && npm install && npm run build:css`. Deploy the folder to Cloudflare Pages, Netlify or Vercel (redirect/rewrite for `/s/*` is included for each).
 1. Edit `landing/assets/config.js` (Supabase URL + anon key, package name, Play link).
 2. Point your domain at it; set `webDomain` in `app/brand.json` to the same domain.
 3. After your first Play upload, paste the **App signing SHA-256** into `landing/.well-known/assetlinks.json` so QR links open the app directly.
 
 ## 4. Designing with Google Stitch
 
-Open `DESIGN.md`, paste **Prompt 0** (design system) into Stitch, then each screen prompt. Export screens named by their ID (e.g. `C03-shop-detail.png`) or connect the Stitch MCP, and share them back — each ID maps to one route file, so the new visuals can be dropped into the working screens without touching data or logic. Tokens live in `app/src/theme/tokens.ts`.
+Open `DESIGN.md`, paste **Prompt 0** (design system) into Stitch, then each screen prompt. Export screens named by their ID (e.g. `C03-shop-detail.png`) or connect the Stitch MCP, and share them back — each ID maps to one route file, so the new visuals can be dropped into the working screens without touching data or logic. Tokens live in `app/tailwind.config.js` (copied verbatim from the Stitch export).
 
 ## 5. How the pieces fit
 
