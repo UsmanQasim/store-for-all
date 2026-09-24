@@ -1,0 +1,29 @@
+/** Tiny sync KV on top of expo-sqlite's localStorage polyfill. Never throws. */
+export const kv = {
+  get(key: string): string | null {
+    try {
+      return globalThis.localStorage?.getItem(key) ?? null;
+    } catch {
+      return null;
+    }
+  },
+  set(key: string, value: string) {
+    try {
+      globalThis.localStorage?.setItem(key, value);
+    } catch {
+      /* ignore */
+    }
+  },
+  remove(key: string) {
+    try {
+      globalThis.localStorage?.removeItem(key);
+    } catch {
+      /* ignore */
+    }
+  },
+};
+
+export const KEYS = {
+  onboarded: 'app.onboarded',
+  businessShop: 'business.shopId',
+} as const;

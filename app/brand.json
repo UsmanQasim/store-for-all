@@ -1,0 +1,12 @@
+{
+  "name": "Dukaan",
+  "tagline": "Your neighbourhood, in your pocket",
+  "slug": "dukaan",
+  "scheme": "dukaan",
+  "androidPackage": "com.dukaan.app",
+  "iosBundleId": "com.dukaan.app",
+  "webDomain": "dukaan.app",
+  "supportEmail": "support@dukaan.app",
+  "primaryColor": "#0B6E4F",
+  "splashBackground": "#0B6E4F"
+}
