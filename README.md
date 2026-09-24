@@ -2,18 +2,18 @@
 
 Digital shop for everyone. A mobile-first, all-in-one app for neighbourhood shops: customers find shops nearby, **book a seat**, **pre-order** products, **review**, **favorite**, and **scan the shop QR to pay**. Shop owners get a free dashboard with a booking queue, order queue, catalog, offers to followers and a printable QR poster.
 
-> The brand name “Dukaan” is a placeholder — rename it in `app/brand.json`, `landing/assets/config.js` and the landing HTML.
+> The brand name “Dukaan” is a placeholder — rename it in `app/brand.json`, `web/src/lib/site.ts` and the landing copy in `web/src/components/Landing.tsx`.
 
 | Folder | What |
 |---|---|
 | `app/` | Expo SDK 57 app (React Native 0.86, Expo Router, TypeScript, React Query, Supabase) |
 | `supabase/` | Database migrations (schema, RLS, RPCs, triggers, storage) + local smoke tests |
-| `landing/` | Static marketing site, legal pages, QR web fallback (`/s/<slug>`), `assetlinks.json` |
+| `web/` | Website (Next.js + TypeScript): marketing landing (English + Urdu), SEO shop pages (`/s/<slug>`, also the QR fallback), shop directory, legal pages, sitemap, `assetlinks.json` |
 | `DESIGN.md` | Design system + **copy-paste prompts for Google Stitch**, screen IDs mapped to route files |
 | `docs/ARCHITECTURE.md` | System design, security model, data model, scaling path |
 | `docs/PLAY_COMPLIANCE.md` | Google Play checklist + Data safety answers |
 
-Everything runs on free tiers: Supabase, Expo/EAS, Expo Push, Cloudflare Pages/Netlify.
+Everything runs on free tiers: Supabase, Expo/EAS, Expo Push, Vercel (Hobby).
 
 ---
 
@@ -59,12 +59,35 @@ Checks: `npm run typecheck` · `npx expo-doctor` · `npx expo export --platform 
 
 **Release:** `npm run build:prod` (AAB) → `npm run submit` (uploads to the internal track). See `docs/PLAY_COMPLIANCE.md` before going public.
 
-## 3. Landing site
+## 3. Website — Next.js (`web/`)
 
-`landing/` is static HTML — `index.html` is the Stitch landing design with CSS precompiled to `assets/landing.css` (no Tailwind CDN at runtime). If you edit classes in `index.html`, rebuild the CSS: `cd landing && npm install && npm run build:css`. Deploy the folder to Cloudflare Pages, Netlify or Vercel (redirect/rewrite for `/s/*` is included for each).
-1. Edit `landing/assets/config.js` (Supabase URL + anon key, package name, Play link).
-2. Point your domain at it; set `webDomain` in `app/brand.json` to the same domain.
-3. After your first Play upload, paste the **App signing SHA-256** into `landing/.well-known/assetlinks.json` so QR links open the app directly.
+Next.js 16 (App Router, TypeScript, Tailwind with the Stitch tokens). Every page is server-rendered HTML, so Google sees the full content.
+
+| Route | What | Rendering |
+|---|---|---|
+| `/` and `/ur` | Stitch landing page in English and Urdu (RTL, Nastaliq), linked with `hreflang` | Static |
+| `/s/<slug>` | One page per published shop: name, area, services & prices, reviews, hours, map link, payment details with copy buttons, “Book in the app”. `LocalBusiness` + breadcrumb structured data. This is also the page a QR opens when the app isn't installed. | Static + refreshed every 5 min (ISR) |
+| `/shops` | Directory of all shops by city (helps Google find every shop page) | Static, hourly |
+| `/privacy` `/terms` `/community-guidelines` `/delete-account` | Legal pages (old `.html` URLs redirect here) | Static |
+| `/sitemap.xml` `/robots.txt` `/.well-known/assetlinks.json` | SEO + Android App Links | Generated |
+
+```bash
+cd web
+cp .env.example .env.local     # same Supabase URL + anon key as the app, and your domain
+npm install
+npm run dev                    # http://localhost:3000
+npm run build                  # production build (also type-checks)
+```
+
+**Deploy (free):** import the repo into Vercel, set **Root Directory = `web`**, add the variables from `.env.example`, deploy, then point your domain at it. Set `webDomain` in `app/brand.json` to the same domain.
+
+**After the first Play upload:** paste the **App signing SHA-256** into `web/public/.well-known/assetlinks.json` so QR links open the app directly.
+
+**Search Console:** add the domain in Google Search Console and submit `https://<domain>/sitemap.xml`.
+
+Notes:
+- Payment numbers are shown on shop pages for customers at the counter, but marked `data-nosnippet` so Google doesn't put them in search results.
+- Icons are inline SVGs generated from the icons the code uses (`scripts/gen-icons.mjs`, runs automatically). Fonts are self-hosted. English pages only download an ~80 KB Urdu font subset for their few Urdu words (`scripts/subset-urdu.py`); the full Urdu font loads only on `/ur`.
 
 ## 4. Designing with Google Stitch
 

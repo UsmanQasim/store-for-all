@@ -20,8 +20,8 @@ export const config = {
 } as const;
 
 export const legalUrls = {
-  privacy: `${config.webUrl}/privacy.html`,
-  terms: `${config.webUrl}/terms.html`,
-  deleteAccount: `${config.webUrl}/delete-account.html`,
-  guidelines: `${config.webUrl}/community-guidelines.html`,
+  privacy: `${config.webUrl}/privacy`,
+  terms: `${config.webUrl}/terms`,
+  deleteAccount: `${config.webUrl}/delete-account`,
+  guidelines: `${config.webUrl}/community-guidelines`,
 } as const;

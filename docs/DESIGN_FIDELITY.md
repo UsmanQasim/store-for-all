@@ -23,8 +23,8 @@ Each screen was rebuilt from its Stitch export (`designs/<id>/code.html`), using
 | B08 Booking queue | `src/app/business/[shopId]/bookings.tsx` |
 | B10 Order detail & packing | `src/app/business/order/[id].tsx` |
 | P01 Counter QR poster | `src/app/business/[shopId]/qr.tsx` (preview) + `src/lib/qr.ts` (A4 PDF) |
-| Brand logo | `components/shell.tsx` `BrandLogo`, `app/assets/*` icons, `landing/assets/favicon.svg` |
-| Landing page | `landing/index.html` |
+| Brand logo | `components/shell.tsx` `BrandLogo`, `app/assets/*` icons, `web/src/app/icon.svg` |
+| Landing page | `web/src/components/Landing.tsx` (`/` English, `/ur` Urdu) |
 
 Screens that had no design (sign-in, verify, complete profile, notifications, edit profile, delete account, reviews, catalog, item editor, payment editor, offers, owner order list, 404) use the same design language.
 
@@ -39,6 +39,6 @@ The Stitch mockups contain example text. Anything the app can't back with real d
   - Removed: rider/ETA tracking, delivery fees, chair/staff selection ("Chair 1", "Ustad Rashid"), customer ratings/distance on orders, profile views, physical standee delivery, prescription upload, SMS alerts, and "payment settled/auto-approved" states. The app never sees payments; customers pay the shop directly.
   - Replacements: Followers instead of profile views; the printable A4 poster instead of the acrylic standee; "Regular (N visits)" / "New customer", computed from real completed bookings.
 - **Controls that did nothing:**
-  - The landing EN/اردو toggle was removed; the Urdu tagline is still there.
+  - The landing EN/اردو toggle now works: it switches to the Urdu page at `/ur`.
   - The B08 "tune" button was removed (the list is sorted by time).
 - **Poster:** the rating chip only appears when the shop has reviews. "Chairs open now" became "Book online / Pre-order online", because a printed poster can't be live.

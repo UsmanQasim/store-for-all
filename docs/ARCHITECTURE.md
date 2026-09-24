@@ -32,9 +32,10 @@
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────┘
                                  ▲
                                  │ anon REST (read-only by RLS)
-┌────────────────── Static site (Cloudflare Pages / Netlify / Vercel — free) ──────────────────┐
-│ /            marketing landing            /privacy /terms /delete-account /community-guidelines│
-│ /s/<slug>    QR web fallback: shop + payment details + “Open in app” / Play Store             │
+┌────────────────── Website: Next.js on Vercel (free) — server-rendered, ISR ───────────────────┐
+│ / + /ur      marketing landing (EN/UR)    /privacy /terms /delete-account /community-guidelines│
+│ /s/<slug>    SEO shop page + QR fallback: menu, prices, reviews, payment, “Open in app”      │
+│ /shops       directory by city            /sitemap.xml /robots.txt                          │
 │ /.well-known/assetlinks.json  → Android App Links verification                                │
 └───────────────────────────────────────────────────────────────────────────────────────────────┘
 ```

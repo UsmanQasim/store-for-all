@@ -1,5 +1,0 @@
-{
-  "cleanUrls": false,
-  "rewrites": [{ "source": "/s/:slug", "destination": "/s/index.html" }],
-  "headers": [{ "source": "/.well-known/assetlinks.json", "headers": [{ "key": "Content-Type", "value": "application/json" }] }]
-}

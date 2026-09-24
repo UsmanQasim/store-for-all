@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body { @apply bg-[#FAF8F5] text-on-surface antialiased font-sans; overscroll-behavior: none; }
+  ::selection { @apply bg-primary-soft text-primary; }
+  :target { scroll-margin-top: 6rem; }
+}
+
+.font-urdu { font-family: var(--font-urdu-lite), serif; }
+
+/* Urdu page: full Nastaliq (the English pages only load a small subset for their few Urdu words). */
+div[lang='ur'], div[lang='ur'] .font-urdu { font-family: var(--font-jakarta), var(--font-urdu), system-ui, sans-serif; }
+
+/* Nastaliq needs tall lines and no letter-spacing (spacing breaks the joined letters). */
+div[lang='ur'] * { letter-spacing: 0 !important; }
+div[lang='ur'] :is(h1, h2, h3, h4, p, summary, a, span, div) { line-height: 1.9; }
+
+/* Legal / long-form pages */
+.doc { @apply text-on-surface-variant leading-relaxed; }
+.doc h1 { @apply text-3xl sm:text-4xl font-extrabold tracking-tight text-on-surface mb-3; }
+.doc h2 { @apply text-xl font-bold text-on-surface mt-10 mb-3; }
+.doc p, .doc ul, .doc ol, .doc table { @apply mb-4; }
+.doc ul { @apply list-disc ps-6 space-y-1.5; }
+.doc ol { @apply list-decimal ps-6 space-y-1.5; }
+.doc a { @apply text-primary font-semibold underline underline-offset-2; }
+.doc b { @apply text-on-surface; }
+.doc .muted { @apply text-text-muted text-sm; }
+.doc .note { @apply bg-accent-soft text-on-surface rounded-xl p-4 text-sm; }
+.doc table { @apply w-full text-sm border-collapse block overflow-x-auto; }
+.doc th, .doc td { @apply border border-border-hairline p-2.5 text-start align-top; }
+.doc th { @apply bg-surface-container-low text-on-surface; }
+.doc .doc-btn { @apply inline-flex no-underline px-5 py-3 rounded-xl bg-primary text-white font-bold; }

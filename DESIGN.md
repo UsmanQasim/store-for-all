@@ -357,7 +357,7 @@ Printable A4 portrait poster for a shop counter. Top centred emerald pill "Dukaa
 
 ## 5. Landing page (marketing website)
 
-Already built in `landing/index.html` with the same tokens. To explore a Stitch variant, use:
+Already built in `web/src/components/Landing.tsx` with the same tokens. To explore a Stitch variant, use:
 
 ```
 Responsive marketing landing page (desktop 1440 + mobile) for "Dukaan — your neighbourhood, in your pocket", a free app for small shops and their customers in Pakistan/South Asia. Same design system as the app (emerald #0B6E4F, saffron #F5A000, warm off-white #FAF8F5, Plus Jakarta Sans). Sections: sticky nav with logo + "Get the app" button; hero with headline "Every shop around you. One app.", sub-copy, Google Play badge and "Register your shop" secondary button, and a phone mockup of the Home screen; a 3-up "For customers" feature row (Book a seat, Pre-order ration, Scan to pay); a "For shop owners" split section with a dashboard phone mockup and a checklist (free listing, booking queue, orders, QR poster, offers to followers); a "How the QR works" 3-step strip; category icon strip; FAQ accordion; final CTA band in emerald; footer with Privacy, Terms, Delete account, Contact.

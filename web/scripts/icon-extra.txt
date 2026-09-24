@@ -1,0 +1,2 @@
+content_cut spa shopping_basket medication bakery_dining restaurant styler phonelink_setup local_laundry_service medical_services devices fitness_center storefront
+event_seat shopping_bag

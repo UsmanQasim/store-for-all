@@ -11,7 +11,7 @@ Policies change; re-check the [Policy Center](https://play.google.com/about/deve
 | Android App Bundle (AAB) upload | ✅ `buildType: app-bundle` | `eas.json` |
 | 64-bit + 16 KB memory page support | ✅ React Native 0.86 native libs are 16 KB-aligned | — |
 | Edge-to-edge (Android 15+) | ✅ Safe-area aware layouts everywhere | `components/ui/layout.tsx` |
-| Play App Signing + App Links | ⚠️ After first upload copy the **App signing key SHA-256** into `landing/.well-known/assetlinks.json` | Play Console → Test and release → App integrity |
+| Play App Signing + App Links | ⚠️ After first upload copy the **App signing key SHA-256** into `web/public/.well-known/assetlinks.json` | Play Console → Test and release → App integrity |
 | Predictive back | ✅ Disabled explicitly until tested | `app.config.ts` |
 
 ## 2. Permissions (least privilege)
@@ -28,7 +28,7 @@ Explicitly **blocked** in `app.config.ts`: background location, microphone, lega
 
 | Item | Status |
 |---|---|
-| Privacy policy URL, reachable in-app and in store listing | ✅ `landing/privacy.html`, linked from Sign-in and Profile · ⚠️ fill placeholders & legal review |
+| Privacy policy URL, reachable in-app and in store listing | ✅ `https://<domain>/privacy` (`web/src/lib/legal.ts`), linked from Sign-in and Profile · ⚠️ fill placeholders & legal review |
 | **In-app account deletion** | ✅ Profile → Delete account → type DELETE (`settings/delete-account.tsx`, RPC `delete_my_account`, cascades all data + storage) |
 | **Web account deletion URL** (required in Data safety form) | ✅ `https://<domain>/delete-account.html` |
 | Prominent disclosure before sensitive permissions | ✅ Location & camera explainers with honest copy |
@@ -92,8 +92,8 @@ Camera frames are processed on-device and never leave it → **not collected**.
 ## 8. Pre-launch checklist ⚠️
 
 - [ ] Supabase: run migrations, configure **custom SMTP** (Resend/Brevo) and the email OTP template (6-digit code), set Site URL.
-- [ ] Replace placeholders in `landing/*.html`, `landing/assets/config.js`, `brand.json` (domain, email, package).
-- [ ] Deploy `landing/` and confirm `https://<domain>/.well-known/assetlinks.json` returns JSON with the Play signing SHA-256.
+- [ ] Replace placeholders in `web/src/lib/legal.ts`, `web/.env.local`, `brand.json` (domain, email, package).
+- [ ] Deploy `web/` and confirm `https://<domain>/.well-known/assetlinks.json` returns JSON with the Play signing SHA-256.
 - [ ] Create review account + demo shop; fill *App access*.
 - [ ] Fill Data safety, Content rating, Target audience, Ads, Financial features declarations as above.
 - [ ] Run Play **pre-launch report** and fix any accessibility/crash findings.

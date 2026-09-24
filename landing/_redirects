@@ -1,2 +1,0 @@
-# Netlify / Cloudflare Pages: every shop QR URL is served by the same page.
-/s/*  /s/index.html  200
