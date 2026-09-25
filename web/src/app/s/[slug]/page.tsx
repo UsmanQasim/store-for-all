@@ -99,7 +99,7 @@ export default async function ShopPage({ params }: PageProps<'/s/[slug]'>) {
       <JsonLd data={ld} />
       <JsonLd data={crumbs} />
       <SiteHeader />
-      <main className="max-w-3xl mx-auto px-4 sm:px-6 pb-8">
+      <main className="w-full max-w-3xl mx-auto px-4 sm:px-6 pb-16">
         <nav aria-label="Breadcrumb" className="text-xs text-text-muted py-4 flex gap-1.5 flex-wrap">
           <Link href="/shops" className="hover:text-primary">Shops</Link>
           {shop.city ? (

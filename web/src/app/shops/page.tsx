@@ -4,6 +4,7 @@ import { SiteFooter, SiteHeader } from '@/components/Chrome';
 import { Icon } from '@/components/Icon';
 import { listShops } from '@/lib/db';
 import { categoryOf } from '@/lib/format';
+import { site } from '@/lib/site';
 
 export const revalidate = 3600;
 
@@ -23,10 +24,22 @@ export default async function Shops() {
   return (
     <>
       <SiteHeader />
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-10">
+      <main className="w-full max-w-5xl mx-auto px-4 sm:px-6 pt-10 pb-16">
         <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-on-surface">Shops on Dukaan</h1>
         <p className="text-text-muted mt-2 max-w-2xl">Neighbourhood shops you can book, pre-order from and pay directly. Open any shop to see its prices, timings and payment details.</p>
-        {byCity.size === 0 ? <p className="mt-10 text-text-muted">No shops are listed yet — be the first to register yours in the app.</p> : null}
+        {byCity.size === 0 ? (
+          <div className="mt-10 rounded-3xl border border-dashed border-primary/30 bg-white p-8 sm:p-12 text-center">
+            <span className="inline-flex w-16 h-16 rounded-2xl bg-primary-soft text-primary items-center justify-center">
+              <Icon name="storefront" className="text-[32px]" />
+            </span>
+            <h2 className="text-xl font-bold text-on-surface mt-4">No shops listed yet</h2>
+            <p className="text-text-muted mt-1 max-w-md mx-auto">Be the first in your area — register your shop in the free app and it will appear here with its prices and timings.</p>
+            <a href={site.playUrl} className="mt-6 inline-flex items-center gap-2 h-12 px-6 rounded-xl bg-secondary-container text-on-secondary-container font-bold">
+              <Icon name="add_business" className="text-[20px]" />
+              Register your shop (free)
+            </a>
+          </div>
+        ) : null}
         {[...byCity].map(([city, list]) => (
           <section key={city} id={encodeURIComponent(city)} className="mt-10">
             <h2 className="text-xl font-bold text-on-surface mb-3">

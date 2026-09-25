@@ -4,6 +4,9 @@ export type Locale = 'en' | 'ur';
  *  (the phone/poster mock-ups intentionally stay in English, matching the app UI). */
 const UR: Record<string, string> = {
   "Dukaan home": "دکان ہوم",
+  "Shops": "دکانیں",
+  "Menu": "مینو",
+  "Close menu": "مینو بند کریں",
   "For Customers": "گاہکوں کے لیے",
   "For Dukaandars": "دکانداروں کے لیے",
   "Counter QR": "کاؤنٹر QR",

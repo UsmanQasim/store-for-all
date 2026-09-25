@@ -5,7 +5,7 @@ The full font (~320 KB) then only downloads on the Urdu page. Re-run after chang
 import pathlib, re, subprocess
 
 root = pathlib.Path(__file__).resolve().parent.parent
-src = ''.join((root / f).read_text('utf-8') for f in ['src/components/Landing.tsx', 'src/components/LangSwitch.tsx'])
+src = ''.join((root / f).read_text('utf-8') for f in ['src/components/Landing.tsx', 'src/components/LangSwitch.tsx', 'src/components/Header.tsx'])
 chars = ''.join(sorted(set(re.findall(r'[؀-ۿ‌-‎]', src)))) + ' ،—'
 for w in (400,):  # one weight is enough for a few words; declared for 400–800 so bold isn't faked
     subprocess.run(['pyftsubset', str(root / f'node_modules/@fontsource/noto-nastaliq-urdu/files/noto-nastaliq-urdu-arabic-{w}-normal.woff2'),

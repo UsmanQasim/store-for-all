@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 // Google reads language from the content + hreflang; the wrapper sets direction and the Nastaliq rules.
 export default function HomeUrdu() {
   return (
-    <div lang="ur" dir="rtl">
+    <div lang="ur" dir="rtl" className="flex flex-col flex-1">
       <Landing locale="ur" />
     </div>
   );

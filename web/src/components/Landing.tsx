@@ -1,6 +1,6 @@
 // Generated from the Stitch landing design (landing/index.html), then maintained by hand.
 import { Icon } from './Icon';
-import { LangSwitch } from './LangSwitch';
+import { Header } from './Header';
 import { PlayQr } from './PlayQr';
 import { site } from '@/lib/site';
 import { tr, type Locale } from '@/lib/i18n';
@@ -9,48 +9,8 @@ export function Landing({ locale }: { locale: Locale }) {
   const t = (s: string) => tr(locale, s);
   return (
     <>
-      <header className="fixed top-0 w-full z-50 bg-[#FAF8F5]/90 backdrop-blur-xl border-b border-border-hairline/60 transition-all">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
-          <a className="flex items-center gap-3 shrink-0 group" href={locale === 'ur' ? '/ur' : '/'}>
-            <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white shadow-md shadow-primary/20 group-hover:scale-105 transition-transform">
-              <Icon name="storefront" className="text-[26px]" />
-            </div>
-            <div className="flex flex-col">
-              <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-2xl tracking-tight text-primary">{t("Dukaan")}</span>
-                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-primary-soft text-primary uppercase tracking-wide">{t("Pk")}</span>
-              </div>
-              <span className="text-[10px] font-medium text-text-muted -mt-1">{t("محلہ کامرس")}</span>
-            </div>
-          </a>
-          <nav className="hidden lg:flex items-center gap-8">
-            <a className="text-sm font-semibold text-on-surface hover:text-primary transition-colors flex items-center gap-1.5" href="#customers">
-              <span>{t("For Customers")}</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-secondary-container" />
-            </a>
-            <a className="text-sm font-semibold text-on-surface-variant hover:text-primary transition-colors" href="#dukaandars">{t("For Dukaandars")}</a>
-            <a className="text-sm font-semibold text-on-surface-variant hover:text-primary transition-colors" href="#counter-qr">{t("Counter QR")}</a>
-            <a className="text-sm font-semibold text-on-surface-variant hover:text-primary transition-colors" href="#trades">{t("Supported Trades")}</a>
-            <a className="text-sm font-semibold text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1" href="#faq">
-              <span>{t("0% Commission")}</span>
-              <span className="text-[10px] font-bold bg-success-soft text-success-green px-1.5 py-0.5 rounded">{t("Forever")}</span>
-            </a>
-            <a className="text-sm font-semibold text-on-surface-variant hover:text-primary transition-colors" href="#faq">{t("FAQ")}</a>
-          </nav>
-          <div className="flex items-center gap-3 shrink-0">
-            <LangSwitch locale={locale} />
-            <a className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-border-hairline text-sm font-bold text-on-surface hover:bg-surface-container transition-all" href={site.playUrl}>
-              <Icon name="store" className="text-[18px] text-secondary-container" />
-              <span>{t("Register Shop")}</span>
-            </a>
-            <a className="inline-flex items-center gap-2 px-3 sm:px-5 py-2.5 rounded-xl bg-primary text-white text-sm font-bold shadow-md shadow-primary/25 hover:bg-primary-pressed hover:shadow-lg transition-all" href={site.playUrl} aria-label={t("Get App")}>
-              <Icon name="download" className="text-[18px]" />
-              <span className="hidden min-[440px]:inline">{t("Get App")}</span>
-            </a>
-          </div>
-        </div>
-      </header>
-      <main className="pt-20">
+      <Header locale={locale} />
+      <main>
         <section className="relative pt-12 pb-24 md:pt-16 md:pb-32 overflow-hidden bg-gradient-to-b from-[#FAF8F5] via-[#F4EFEA] to-[#FAF8F5]">
           <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-primary/10 rounded-full blur-[130px] pointer-events-none -z-10" />
           <div className="absolute top-48 right-10 w-[400px] h-[350px] bg-secondary-container/15 rounded-full blur-[100px] pointer-events-none -z-10" />

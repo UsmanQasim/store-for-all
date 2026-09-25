@@ -20,7 +20,7 @@ export const viewport: Viewport = { themeColor: '#0B6E4F', width: 'device-width'
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${jakarta.variable} ${nastaliq.variable} ${nastaliqLite.variable}`}>
-      <body>{children}</body>
+      <body className="min-h-dvh flex flex-col">{children}</body>
     </html>
   );
 }

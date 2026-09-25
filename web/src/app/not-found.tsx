@@ -6,7 +6,7 @@ export default function NotFound() {
   return (
     <>
       <SiteHeader />
-      <main className="max-w-xl mx-auto px-4 py-20 text-center">
+      <main className="w-full max-w-xl mx-auto px-4 py-20 text-center">
         <span className="inline-flex w-16 h-16 rounded-full bg-primary-soft text-primary items-center justify-center">
           <Icon name="storefront" className="text-[32px]" />
         </span>

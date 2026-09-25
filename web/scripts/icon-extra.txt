@@ -1,2 +1,3 @@
 content_cut spa shopping_basket medication bakery_dining restaurant styler phonelink_setup local_laundry_service medical_services devices fitness_center storefront
 event_seat shopping_bag
+person storefront qr_code_2 category location_on help add_business download
