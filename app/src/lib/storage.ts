@@ -1,3 +1,5 @@
+import 'expo-sqlite/localStorage/install';
+
 /** Tiny sync KV on top of expo-sqlite's localStorage polyfill. Never throws. */
 export const kv = {
   get(key: string): string | null {

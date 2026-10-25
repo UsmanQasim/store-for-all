@@ -104,6 +104,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   extra: {
     brand,
     router: {},
-    eas: { projectId: process.env.EAS_PROJECT_ID },
+    eas: { projectId: process.env.EAS_PROJECT_ID || '7ac6c758-c27d-4941-b61e-f274411b3161' },
   },
 });

@@ -60,6 +60,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "expo lint",
     "doctor": "npx expo-doctor",
+    "build:apk": "npx eas-cli@latest build --profile preview --platform android",
     "build:dev": "npx eas-cli@latest build --profile development --platform android",
     "build:prod": "npx eas-cli@latest build --profile production --platform android",
     "submit": "npx eas-cli@latest submit --platform android --profile production"

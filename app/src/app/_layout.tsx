@@ -1,3 +1,4 @@
+import 'expo-sqlite/localStorage/install';
 import {
   PlusJakartaSans_400Regular,
   PlusJakartaSans_500Medium,

@@ -5,17 +5,35 @@
       "developmentClient": true,
       "distribution": "internal",
       "android": { "buildType": "apk" },
-      "environment": "development"
+      "environment": "development",
+      "env": {
+        "EXPO_PUBLIC_SUPABASE_URL": "https://fdezsuzuqabmsjtghhgc.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "sb_publishable_GWbQoPE0KDs-YmXUCXewsg_0g_LR4MC",
+        "EXPO_PUBLIC_WEB_URL": "https://dukaan.app",
+        "EAS_PROJECT_ID": "7ac6c758-c27d-4941-b61e-f274411b3161"
+      }
     },
     "preview": {
       "distribution": "internal",
       "android": { "buildType": "apk" },
-      "environment": "preview"
+      "environment": "preview",
+      "env": {
+        "EXPO_PUBLIC_SUPABASE_URL": "https://fdezsuzuqabmsjtghhgc.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "sb_publishable_GWbQoPE0KDs-YmXUCXewsg_0g_LR4MC",
+        "EXPO_PUBLIC_WEB_URL": "https://dukaan.app",
+        "EAS_PROJECT_ID": "7ac6c758-c27d-4941-b61e-f274411b3161"
+      }
     },
     "production": {
       "autoIncrement": true,
       "android": { "buildType": "app-bundle" },
-      "environment": "production"
+      "environment": "production",
+      "env": {
+        "EXPO_PUBLIC_SUPABASE_URL": "https://fdezsuzuqabmsjtghhgc.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "sb_publishable_GWbQoPE0KDs-YmXUCXewsg_0g_LR4MC",
+        "EXPO_PUBLIC_WEB_URL": "https://dukaan.app",
+        "EAS_PROJECT_ID": "7ac6c758-c27d-4941-b61e-f274411b3161"
+      }
     }
   },
   "submit": {
